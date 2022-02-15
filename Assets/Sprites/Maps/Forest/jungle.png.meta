@@ -1,0 +1,684 @@
+fileFormatVersion: 2
+guid: 8ffee60fe942b934cbd014b66be22ffd
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8215496767649456077
+    second: jungle_1
+  - first:
+      213: -7373709855490555931
+    second: jungle_2
+  - first:
+      213: -3561867730572809864
+    second: jungle_3
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: jungle_4
+      rect:
+        serializedVersion: 2
+        x: 867
+        y: 963
+        width: 87
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 04b41fb83ab28d230800000000000000
+      internalID: 3663726278293408576
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jungle_7
+      rect:
+        serializedVersion: 2
+        x: 963
+        y: 961
+        width: 55
+        height: 51
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3211695765e039380800000000000000
+      internalID: -8965806668661780189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jungle_13
+      rect:
+        serializedVersion: 2
+        x: 870
+        y: 899
+        width: 87
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d2ed9311f367a3810800000000000000
+      internalID: 1745837818803510829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jungle_14
+      rect:
+        serializedVersion: 2
+        x: 962
+        y: 935
+        width: 27
+        height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8d3cf38988203d9c0800000000000000
+      internalID: -3903773666306964520
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jungle_15
+      rect:
+        serializedVersion: 2
+        x: 993
+        y: 901
+        width: 25
+        height: 52
+      alignment: 9
+      pivot: {x: 0.47499266, y: 0.30762893}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c1cecfcadee388e20800000000000000
+      internalID: 3352999113107762204
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jungle_17
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 900
+        width: 22
+        height: 28
+      alignment: 9
+      pivot: {x: 0.58525777, y: 0.36602783}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f20a8ec2a62ab3680800000000000000
+      internalID: -8774240872097603537
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jungle_21
+      rect:
+        serializedVersion: 2
+        x: 866
+        y: 737
+        width: 93
+        height: 31
+      alignment: 9
+      pivot: {x: 0.5, y: 0.35882372}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e7eb4e3c66029f190800000000000000
+      internalID: -7928270043263746434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jungle_22
+      rect:
+        serializedVersion: 2
+        x: 867
+        y: 657
+        width: 102
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4b03271acec68a0f0800000000000000
+      internalID: -1105513944942759756
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jungle_39
+      rect:
+        serializedVersion: 2
+        x: 676
+        y: 294
+        width: 58
+        height: 42
+      alignment: 9
+      pivot: {x: 0.5, y: 0.31711033}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e09ce38bc8ccc2d0800000000000000
+      internalID: -3257007654078476062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jungle_40
+      rect:
+        serializedVersion: 2
+        x: 736
+        y: 289
+        width: 64
+        height: 60
+      alignment: 9
+      pivot: {x: 0.46726704, y: 0.3021469}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f2781431534ef8550800000000000000
+      internalID: 6165397331500959535
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jungle_42
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 224
+        width: 64
+        height: 62
+      alignment: 9
+      pivot: {x: 0.5, y: 0.24095128}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 21bf53499584f3bf0800000000000000
+      internalID: -342475497081013486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jungle_43
+      rect:
+        serializedVersion: 2
+        x: 736
+        y: 224
+        width: 64
+        height: 59
+      alignment: 9
+      pivot: {x: 0.5, y: 0.2751227}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5bac9ed24767ea480800000000000000
+      internalID: -8886034773396829515
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jungle_44
+      rect:
+        serializedVersion: 2
+        x: 801
+        y: 224
+        width: 63
+        height: 62
+      alignment: 9
+      pivot: {x: 0.52216834, y: 0.27474016}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 431c9d2ce6f277b20800000000000000
+      internalID: 3132024218621428020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jungle_45
+      rect:
+        serializedVersion: 2
+        x: 864
+        y: 224
+        width: 63
+        height: 61
+      alignment: 9
+      pivot: {x: 0.48891583, y: 0.25960004}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9b213a65ed74e6010800000000000000
+      internalID: 1183962772306858681
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jungle_46
+      rect:
+        serializedVersion: 2
+        x: 930
+        y: 192
+        width: 59
+        height: 63
+      alignment: 9
+      pivot: {x: 0.5, y: 0.3004843}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: be5608e6a177b9260800000000000000
+      internalID: 7105403792513852907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jungle_47
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 160
+        width: 64
+        height: 40
+      alignment: 9
+      pivot: {x: 0.5, y: 0.3603386}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 16151ff8cb155f400800000000000000
+      internalID: 357281615756480865
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jungle_48
+      rect:
+        serializedVersion: 2
+        x: 747
+        y: 160
+        width: 40
+        height: 64
+      alignment: 9
+      pivot: {x: 0.53491515, y: 0.21631384}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 15900709b71afd170800000000000000
+      internalID: 8205454598168643921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jungle_49
+      rect:
+        serializedVersion: 2
+        x: 813
+        y: 160
+        width: 40
+        height: 39
+      alignment: 9
+      pivot: {x: 0.5174576, y: 0.3030423}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c5fa29d31b137b120800000000000000
+      internalID: 2429465161301667676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jungle_50
+      rect:
+        serializedVersion: 2
+        x: 876
+        y: 160
+        width: 40
+        height: 61
+      alignment: 9
+      pivot: {x: 0.5, y: 0.23670484}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ec4a822f9664f0c10800000000000000
+      internalID: 2021912178560902350
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jungle_51
+      rect:
+        serializedVersion: 2
+        x: 939
+        y: 74
+        width: 46
+        height: 112
+      alignment: 9
+      pivot: {x: 0.4848195, y: 0.2069615}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 83e2553a5b5333330800000000000000
+      internalID: 3689351573992189496
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jungle_52
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 67
+        width: 64
+        height: 86
+      alignment: 9
+      pivot: {x: 0.489089, y: 0.24828552}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2d4b192e091274230800000000000000
+      internalID: 3622901331403060434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jungle_53
+      rect:
+        serializedVersion: 2
+        x: 737
+        y: 67
+        width: 63
+        height: 91
+      alignment: 9
+      pivot: {x: 0.46674746, y: 0.21607426}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: db56f33c9272a6090800000000000000
+      internalID: -8040571124393744963
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jungle_54
+      rect:
+        serializedVersion: 2
+        x: 800
+        y: 65
+        width: 64
+        height: 88
+      alignment: 9
+      pivot: {x: 0.45635605, y: 0.2460713}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 255000cacf95c1110800000000000000
+      internalID: 1232959339744986450
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jungle_55
+      rect:
+        serializedVersion: 2
+        x: 864
+        y: 67
+        width: 64
+        height: 93
+      alignment: 9
+      pivot: {x: 0.6963997, y: 0.19965395}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 536139d081037fa70800000000000000
+      internalID: 8860603671739831861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jungle_1
+      rect:
+        serializedVersion: 2
+        x: 928
+        y: 257
+        width: 96
+        height: 95
+      alignment: 9
+      pivot: {x: 0.8055083, y: 0.3676899}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dcf9d1958ce430270800000000000000
+      internalID: 8215496767649456077
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jungle_2
+      rect:
+        serializedVersion: 2
+        x: 863
+        y: 288
+        width: 65
+        height: 63
+      alignment: 9
+      pivot: {x: 0.51074314, y: 0.21181089}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ef30ba34f15ba990800000000000000
+      internalID: -7373709855490555931
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jungle_3
+      rect:
+        serializedVersion: 2
+        x: 799
+        y: 287
+        width: 63
+        height: 63
+      alignment: 9
+      pivot: {x: 0.5110842, y: 0.27831596}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 879e74eab24b19ec0800000000000000
+      internalID: -3561867730572809864
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

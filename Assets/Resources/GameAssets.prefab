@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8580464516132297214
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6012703945718627939}
+  - component: {fileID: 2316613467653822847}
+  m_Layer: 0
+  m_Name: GameAssets
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6012703945718627939
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8580464516132297214}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2316613467653822847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8580464516132297214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1a9591f8de54729b29ec093766fa771, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultEquipments:
+  - {fileID: 11400000, guid: 9d37a784f2194e440afd73b76cc8af94, type: 2}
+  - {fileID: 11400000, guid: 48fdedbc09e1bb342a983c3a2174c8c9, type: 2}
+  - {fileID: 11400000, guid: 6203858d7500f54458ffa1df731207c7, type: 2}
+  - {fileID: 11400000, guid: cb21f6c06b4926b4cb5940bc2bc8c14e, type: 2}
+  - {fileID: 11400000, guid: e7017a4370c173e42a434806e35327e6, type: 2}
+  - {fileID: 11400000, guid: c41d0ebedfaf4154e9627db8fd06ee9a, type: 2}
+  pfMap1: {fileID: 8267046566070467138, guid: afe28c65a2ea24a47a14958213f0cabc, type: 3}
+  pfBachi: {fileID: 4824041439075634470, guid: c0b562a00b5a29745bc3865d05cc7e77, type: 3}
+  pfDuju: {fileID: 8136380666592154456, guid: b4fea77c95589394c887225609ffd9af, type: 3}
+  pfPanno: {fileID: 7929051262823961684, guid: ae68d2a0cefcaab4587041e7f21d7ac6, type: 3}
+  pfSoldierA: {fileID: 246739261740467637, guid: 1b53081d5f8f78541a086f53bb9c060c, type: 3}
+  pfSosuno: {fileID: 7720277017833287164, guid: a155a422be61590489896148ce54762f, type: 3}
+  pfEnemy1: {fileID: 246739261740467637, guid: 8d2bede4b59abf64f88c20060f46bb5a, type: 3}
+  pfDamagePopup: {fileID: 2920174026715650587, guid: 22ee04564f56fb34083cdef427c9c97b, type: 3}
