@@ -1,5 +1,4 @@
-﻿using Control.Item;
-using Manager;
+﻿using Manager;
 using UnityEngine;
 
 namespace Control.Stuff
@@ -15,7 +14,7 @@ namespace Control.Stuff
             }
         }
 
-        public Equipment[] defaultEquipments;
+        public Equipment.Equipment[] defaultEquipments;
 
         public Transform pfMap1;
         

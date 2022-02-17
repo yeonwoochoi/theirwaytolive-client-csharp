@@ -1,5 +1,6 @@
 ﻿using System;
 using Control.Characters.Base;
+using Control.Characters.Type;
 using UnityEngine;
 using Util;
 using Vector2 = UnityEngine.Vector2;

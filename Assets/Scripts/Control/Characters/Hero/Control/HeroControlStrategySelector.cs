@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Control.Characters.Base;
 using Control.Characters.Hero.Control.Strategies;
+using Control.Characters.Type;
 using Control.Weapon;
 using UnityEngine;
 using Logger = Util.Logger;
@@ -16,12 +17,12 @@ namespace Control.Characters.Hero.Control
         private HeroTargeting heroTargeting;
         private HeroAnimationController heroAnimationController;
         
-        private ControlType activeControlType;
+        private HeroControlType activeHeroControlType;
         private IHeroMovable activeStrategy;
         
         private List<IHeroMovable> strategies;
 
-        public void Init(ControlType initControlType)
+        public void Init(HeroControlType initHeroControlType)
         {
             if (isSet) return;
             
@@ -39,7 +40,7 @@ namespace Control.Characters.Hero.Control
             heroAnimationController.Init();
             
             strategies = new List<IHeroMovable>();
-            SetControlStrategy(initControlType);
+            SetControlStrategy(initHeroControlType);
 
             Logger.Debug(this, "init success");
             isSet = true;
@@ -64,10 +65,10 @@ namespace Control.Characters.Hero.Control
         }
         */
 
-        public void ChangeControlRole(ControlType controlType)
+        public void ChangeControlRole(HeroControlType heroControlType)
         {
             if (!isSet) return;
-            SetControlStrategy(controlType);
+            SetControlStrategy(heroControlType);
         }
 
         public void ChangeWeapon(WeaponType weaponType)
@@ -88,7 +89,7 @@ namespace Control.Characters.Hero.Control
                 heroAnimationController.ChangeDeathState(() => {}, () =>
                 {
                     // 주인공은 Fadeout 되는 등의 죽었을때 효과 안 나타남.
-                    if (GetActiveControlType() != ControlType.Joystick)
+                    if (GetActiveControlType() != HeroControlType.Joystick)
                     {
                         heroMain.HeroEffectController.OnDeadEffect();
                     }
@@ -101,37 +102,37 @@ namespace Control.Characters.Hero.Control
             }
         }
 
-        private void SetControlStrategy(ControlType controlType)
+        private void SetControlStrategy(HeroControlType heroControlType)
         {
-            activeControlType = controlType;
+            activeHeroControlType = heroControlType;
             
             // 없으면 추가해주고
-            switch(controlType)
+            switch(heroControlType)
             {
-                case ControlType.Auto:
+                case HeroControlType.Auto:
                     if (GetComponent<HeroAutoControlStrategy>() == null)
                         strategies.Add(gameObject.AddComponent<HeroAutoControlStrategy>());
                     break;
-                case ControlType.Joystick:
+                case HeroControlType.Joystick:
                     if (GetComponent<HeroJoystickControlStrategy>() == null)
                         strategies.Add(gameObject.AddComponent<HeroJoystickControlStrategy>());
                     break;
-                case ControlType.Disable:
+                case HeroControlType.Disable:
                     if (GetComponent<HeroNpcControlStrategy>() == null)
                         strategies.Add(gameObject.AddComponent<HeroNpcControlStrategy>());
                     break;
             }
             
-            var speed = GetSpeed(controlType);
+            var speed = GetSpeed(heroControlType);
 
             activeStrategy?.Disable();
-            activeStrategy = GetMoveStrategyFromHeroRole(controlType);
+            activeStrategy = GetMoveStrategyFromHeroRole(heroControlType);
             activeStrategy.Init(speed);
         }
 
-        public ControlType GetActiveControlType()
+        public HeroControlType GetActiveControlType()
         {
-            return activeControlType;
+            return activeHeroControlType;
         }
 
         public Direction GetMoveDirection()
@@ -139,12 +140,12 @@ namespace Control.Characters.Hero.Control
             return activeStrategy.GetMoveDirection();
         }
 
-        private IHeroMovable GetMoveStrategyFromHeroRole(ControlType controlType)
+        private IHeroMovable GetMoveStrategyFromHeroRole(HeroControlType heroControlType)
         {
             IHeroMovable result = null;
             foreach (var strategy in strategies)
             {
-                if (controlType == strategy.GetHeroRole())
+                if (heroControlType == strategy.GetHeroControlType())
                 {
                     result = strategy;
                 }
@@ -153,9 +154,9 @@ namespace Control.Characters.Hero.Control
             return result;
         }
 
-        private float GetSpeed(ControlType controlType)
+        private float GetSpeed(HeroControlType heroControlType)
         {
-            return heroMain.HeroStats.GetSpeed(controlType);
+            return heroMain.HeroStats.GetSpeed(heroControlType);
         }
     }
 }

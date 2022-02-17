@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections;
+using Control.Characters.Enemy.Targeting;
+using Control.Characters.Type;
 using Control.Weapon;
 using Pathfinding;
 using UnityEngine;
 using Util;
 
-namespace Control.Characters.Enemy
+namespace Control.Characters.Enemy.Action
 {
-    public class EnemyMoveStrategy: MonoBehaviour
+    public class EnemyAttackMoveStrategy: MonoBehaviour, IEnemyMovable
     {
-        private bool isSet = false;
-
         private EnemyMain enemyMain;
         private EnemyTargeting enemyTargeting;
         private EnemyAnimationController enemyAnimationController;
@@ -24,6 +24,7 @@ namespace Control.Characters.Enemy
             Normal, Chasing, Attacking, Busy
         }
         private State state;
+        private WeaponType weaponType;
 
         private Coroutine moveCoroutine;
         private Vector3 randomPosition;
@@ -36,18 +37,12 @@ namespace Control.Characters.Enemy
 
         private Enemy.IEnemyInteractable target;
 
-        public void Init()
+        public void Init(float speed = 2f)
         {
-            if (isSet) return;
-            
             enemyMain = GetComponent<EnemyMain>();
             
-            enemyAnimationController = TryGetComponent<EnemyAnimationController>(out var animationController)
-                ? animationController
-                : gameObject.AddComponent<EnemyAnimationController>();
-            enemyTargeting = TryGetComponent<EnemyTargeting>(out var targeting)
-                ? targeting
-                : gameObject.AddComponent<EnemyTargeting>();
+            enemyAnimationController = GetComponent<EnemyAnimationController>();
+            enemyTargeting = GetComponent<EnemyTargeting>();
             
             aiPath = TryGetComponent<AIPath>(out var pathController)
                 ? pathController
@@ -56,30 +51,29 @@ namespace Control.Characters.Enemy
                 ? aiDestination
                 : gameObject.AddComponent<AIDestinationSetter>();
 
+            aiPath.enabled = true;
+            destinationSetter.enabled = true;
+            
             aiPath.orientation = OrientationMode.YAxisForward;
             aiPath.radius = 0.5f;
             aiPath.gravity = Vector3.zero;
             aiPath.slowdownDistance = 1f;
             aiPath.endReachedDistance = 0f;
-            aiPath.maxSpeed = GetSpeed();
+            aiPath.maxSpeed = speed;
             aiPath.enableRotation = false;
 
             rb2D = GetComponent<Rigidbody2D>();
             
             randomPosition = GetPosition() + UtilsClass.GetRandomDir() * wanderRange;
 
-            enemyTargeting.Init();
-            enemyAnimationController.Init();
-            
             detectableRange = EnemyTargeting.detectableRange;
             state = State.Normal;
+            weaponType = enemyMain.WeaponSystem.GetWeaponType();
             isWanderCool = false;
             isAttackCool = false;
             
             if (moveCoroutine != null) StopCoroutine(moveCoroutine);
             moveCoroutine = StartCoroutine(Move());
-
-            isSet = true;
         }
 
         public void Disable()
@@ -93,9 +87,7 @@ namespace Control.Characters.Enemy
 
             aiPath.enabled = false;
             destinationSetter.enabled = false;
-            
-            enemyTargeting.Disable();
-            
+
             if (enemyMain.Enemy.IsDead())
             {
                 enemyAnimationController.ChangeDeathState(() => {}, enemyMain.EnemyEffectController.OnDead);
@@ -106,16 +98,10 @@ namespace Control.Characters.Enemy
                 enemyAnimationController.ChangeMovingState(false);
             }
         }
-        
-        public void ChangeWeapon(WeaponType type)
+
+        public EnemyActionType GetEnemyActionType()
         {
-            if (!isSet) return;
-            enemyAnimationController.ChangeWeapon(type);
-            if (state != State.Normal)
-            {
-                aiPath.slowdownDistance = GetAttackRange() + 1f;
-                aiPath.endReachedDistance = GetAttackRange();   
-            }
+            return EnemyActionType.Attack;
         }
 
         private IEnumerator Move()
@@ -163,7 +149,7 @@ namespace Control.Characters.Enemy
             }
         }
 
-        private void SetState(Enemy.IEnemyInteractable tempTarget, Action onStateChangedCallback)
+        private void SetState(Enemy.IEnemyInteractable tempTarget, System.Action onStateChangedCallback)
         {
             // Calculate target distance for set state
             var targetDistance = 0f;
@@ -233,10 +219,6 @@ namespace Control.Characters.Enemy
         {
             if (isAttackCool || target == null) return;
             target.Interact(enemyMain.Enemy);
-            // Knockback 효과같은게 있으면 공격과 동시에 적과 거리가 멀어져서
-            // State가 chasing으로 바뀌게 되고 중간에 animation이 다 실행되지 않고 끊긴다
-            // 그래서 OnEndEvent가 실행되지 않는 경우가 생겨 연속공격을 하기 시작함. => 그래서 여기다 Cooltime
-            AttackCoolTime();
         }
 
         private void AttackCoolTime()
@@ -266,14 +248,17 @@ namespace Control.Characters.Enemy
             isAttackCool = false;
         }
 
-        private float GetSpeed()
-        {
-            return enemyMain.EnemyStats.GetSpeed();
-        }
-        
         private float GetAttackRange()
         {
-            return WeaponSystem.GetWeaponAttackRange(enemyMain.WeaponSystem.GetWeaponType());
+            var prev = weaponType;
+            weaponType = enemyMain.WeaponSystem.GetWeaponType();
+            var attackRange = WeaponSystem.GetWeaponAttackRange(weaponType);
+            if (state != State.Normal && prev != weaponType)
+            {
+                aiPath.slowdownDistance = attackRange + 1f;
+                aiPath.endReachedDistance = attackRange;   
+            }
+            return attackRange;
         }
 
         private void SetTarget(Enemy.IEnemyInteractable targetEnemy = null)

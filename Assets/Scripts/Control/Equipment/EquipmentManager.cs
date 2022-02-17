@@ -2,23 +2,23 @@
 using System.Collections.Generic;
 using Control.Characters.Hero;
 using Control.Characters.Stat;
+using Control.Characters.Type;
 using Control.Stuff;
 using Manager;
-using UnityEngine;
 
-namespace Control.Item
+namespace Control.Equipment
 {
     public class EquipmentManager: MonoSingleton<EquipmentManager>
     {
         // Hero, Player들 Equipments 목록
-        private Dictionary<MainCharacterType, Equipment[]> heroEquipments;
+        private Dictionary<MainCharacterType, Control.Equipment.Equipment[]> heroEquipments;
 
         // Equipment 업그레이드 시 호출되는 event
         public event EventHandler<UpgradeEquipmentEventArgs> UpgradeEquipmentEvent;
         public class UpgradeEquipmentEventArgs: EventArgs
         {
             public MainCharacterType characterType;
-            public Equipment[] equipments;
+            public Control.Equipment.Equipment[] equipments;
         }
         
         /// <summary>
@@ -28,7 +28,7 @@ namespace Control.Item
         public void InitHeroEquips(MainCharacterType mainCharacterType)
         {
             if (mainCharacterType == MainCharacterType.Etc) return;
-            heroEquipments ??= new Dictionary<MainCharacterType, Equipment[]>();
+            heroEquipments ??= new Dictionary<MainCharacterType, Control.Equipment.Equipment[]>();
             if (!heroEquipments.ContainsKey(mainCharacterType))
             {
                 heroEquipments.Add(mainCharacterType, GameAssets.i.defaultEquipments);
@@ -64,7 +64,7 @@ namespace Control.Item
         /// </summary>
         /// <param name="target"></param>
         /// <returns></returns>
-        public Equipment[] GetHeroEquipments(MainCharacterType target)
+        public Control.Equipment.Equipment[] GetHeroEquipments(MainCharacterType target)
         {
             return heroEquipments[target];
         }

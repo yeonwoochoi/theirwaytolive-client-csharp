@@ -1,4 +1,6 @@
 ﻿using Control.Characters.Base;
+using Control.Characters.Hero;
+using Control.Characters.Type;
 using UI;
 using UnityEngine;
 
@@ -18,7 +20,7 @@ namespace Control.Characters.Enemy
         /// </summary>
         public void OnDamaged(Enemy.IEnemyInteractable attacker, DamageCalculator.DamageInfo damageInfo)
         { 
-            if (damageInfo.isCritical) KnockBackEffect(attacker.GetPosition());
+            if (attacker.GetControlType() == HeroControlType.Joystick) KnockBackEffect(attacker.GetPosition());
             BloodEffect(attacker.GetPosition());
             DamagePopupEffect(damageInfo.isCritical, damageInfo.isMiss, damageInfo.amount);
         }

@@ -2,7 +2,9 @@
 using System.Collections;
 using Control.Characters.Base;
 using Control.Characters.Enemy;
+using Control.Characters.Health;
 using Control.Characters.Hero.Control;
+using Control.Characters.Type;
 using Control.Weapon;
 using UnityEngine;
 using Logger = Util.Logger;
@@ -21,7 +23,7 @@ namespace Control.Characters.Hero
         
         private bool isSet = false;
 
-        public void Init(Hero hero, ControlType role, WeaponType weaponType)
+        public void Init(Hero hero, HeroControlType role, WeaponType weaponType)
         {
             if (isSet) return;
             
@@ -56,7 +58,7 @@ namespace Control.Characters.Hero
         /// 역할 바꿀때 이거 호출하면 됨.
         /// </summary>
         /// <param name="type"></param>
-        public void ChangeControlType(ControlType type)
+        public void ChangeControlType(HeroControlType type)
         {
             if (!isSet) return;
             HeroControlStrategySelector.ChangeControlRole(type);
@@ -69,6 +71,16 @@ namespace Control.Characters.Hero
         public void ChangeWeapon(WeaponType type)
         {
             WeaponSystem.SetWeaponType(type);
+        }
+
+        /// <summary>
+        /// Heal 할때 이거 호출하면 됨.
+        /// </summary>
+        /// <param name="amount"></param>
+        public void Heal(int amount)
+        {
+            if (!isSet) return;
+            HeroStats.HealthSystem.Heal(amount);
         }
 
         private void Dead()

@@ -1,21 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Control.Characters.Type;
 using Control.Weapon;
 using UnityEngine;
 using Logger = Util.Logger;
 
 namespace Control.Characters.Hero
 {
-    public enum ControlType
-    {
-        Joystick, Auto, Disable
-    }
-
-    public enum MainCharacterType
-    {
-        Bachi, Duju, Panno, Etc
-    }
-    
     public class Hero: MonoBehaviour, Enemy.Enemy.IEnemyInteractable
     {
         public interface IHeroInteractable: ICharacterInteractable
@@ -25,26 +16,28 @@ namespace Control.Characters.Hero
 
         public static List<Hero> heroList = new List<Hero>();
 
-        public static Hero Create(Vector3 position, Transform heroPrefab, ControlType controlType, WeaponType weaponType, bool activate = false)
+        public static Hero Create(Vector3 position, Transform heroPrefab, HeroControlType heroControlType, WeaponType weaponType, bool activate = false)
         {
             var heroTransform = Instantiate(heroPrefab, position, Quaternion.identity);
-
             var heroHandler = heroTransform.GetComponent<Hero>();
 
-            // Create 되자마자 Activate 되느냐 마냐
-            if (activate) heroHandler.Init(controlType, weaponType);
+            // Create 되자마자 Activate 되냐 마냐
+            if (activate) heroHandler.Init(heroControlType, weaponType);
             else
             {
-                heroHandler.initControlType = controlType;
+                heroHandler._initHeroControlType = heroControlType;
                 heroHandler.initWeaponType = weaponType;
             }
             
             return heroHandler;
         }
         
+        /// <summary>
+        /// Equipment manager 때문에 있는거임..
+        /// </summary>
         [SerializeField] private MainCharacterType mainCharacterType = MainCharacterType.Etc;
         
-        private ControlType initControlType;
+        private HeroControlType _initHeroControlType;
         private WeaponType initWeaponType;
         private HeroMain heroMain;
         private bool isSet = false;
@@ -52,11 +45,11 @@ namespace Control.Characters.Hero
         /// <summary>
         /// Instantiate 하자마자 바로 Activate 하는 경우
         /// </summary>
-        private void Init(ControlType controlType, WeaponType weaponType)
+        private void Init(HeroControlType heroControlType, WeaponType weaponType)
         {
             if (isSet) return;
             heroMain = GetComponent<HeroMain>();
-            SetHeroControlType(controlType, type =>
+            SetHeroControlType(heroControlType, type =>
             {
                 heroMain.Init(this, type, weaponType);
             });
@@ -71,34 +64,12 @@ namespace Control.Characters.Hero
         {
             if (isSet) return;
             heroMain = GetComponent<HeroMain>();
-            SetHeroControlType(initControlType, type =>
+            SetHeroControlType(_initHeroControlType, type =>
             {
                 heroMain.Init(this, type, initWeaponType);
             });
             heroList.Add(this);
             isSet = true;
-        }
-
-        /// <summary>
-        /// 이걸로 함수를 실행하면 Hero role 변경 관련 모든 script 실행.
-        /// </summary>
-        public void SetHeroControlType(ControlType role, Action<ControlType> setControlType)
-        {
-            if (role == ControlType.Joystick)
-            {
-                foreach (var hero in heroList)
-                {
-                    if (hero.GetActiveControlType() == ControlType.Joystick)
-                    {
-                        setControlType.Invoke(ControlType.Auto);
-                    }
-                }
-                setControlType.Invoke(role);
-            }
-            else
-            {
-                setControlType.Invoke(role);
-            }
         }
 
         public GameObject GetGameObject()
@@ -111,10 +82,42 @@ namespace Control.Characters.Hero
             return transform.position;
         }
 
-        public void Interact(IHeroInteractable attacker)
+        /// <summary>
+        /// 공격을 하는 경우엔 target이 enemy겠지
+        /// </summary>
+        /// <param name="subject">말 그대로 Hero와 상호작용할 대상</param>
+        public void Interact(IHeroInteractable subject)
         {
             if (!isSet) return;
-            heroMain.Damaged(attacker);
+            heroMain.Damaged(subject);
+        }
+
+        public void Heal(int amount)
+        {
+            if (!isSet) return;
+            heroMain.Heal(amount);
+        }
+
+        public void ChangeWeapon(WeaponType weaponType)
+        {
+            if (!isSet) return;
+            heroMain.ChangeWeapon(weaponType);
+        }
+
+        public void ChangeControlType(HeroControlType heroControlType)
+        {
+            if (!isSet) return;
+            heroMain.ChangeControlType(heroControlType);
+        }
+
+        public HeroControlType GetControlType()
+        {
+            return isSet ? heroMain.HeroControlStrategySelector.GetActiveControlType() : _initHeroControlType;
+        }
+
+        public MainCharacterType GetMainCharacterType()
+        {
+            return mainCharacterType;
         }
 
         public bool IsDead()
@@ -127,14 +130,23 @@ namespace Control.Characters.Hero
             return heroMain.HeroStats.HealthSystem.IsDead();
         }
 
-        public ControlType GetActiveControlType()
+        private void SetHeroControlType(HeroControlType role, Action<HeroControlType> setControlType)
         {
-            return isSet ? heroMain.HeroControlStrategySelector.GetActiveControlType() : initControlType;
-        }
-
-        public MainCharacterType GetMainCharacterType()
-        {
-            return mainCharacterType;
+            if (role == HeroControlType.Joystick)
+            {
+                foreach (var hero in heroList)
+                {
+                    if (hero.GetControlType() == HeroControlType.Joystick)
+                    {
+                        setControlType.Invoke(HeroControlType.Auto);
+                    }
+                }
+                setControlType.Invoke(role);
+            }
+            else
+            {
+                setControlType.Invoke(role);
+            }
         }
     }
 }

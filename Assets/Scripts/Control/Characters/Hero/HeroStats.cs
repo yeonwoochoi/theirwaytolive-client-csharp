@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using Control.Characters.Base;
 using Control.Characters.Health;
 using Control.Characters.Stat;
-using Control.Item;
+using Control.Characters.Type;
+using Control.Equipment;
 using Control.Weapon;
 using UnityEngine;
 
@@ -54,7 +55,7 @@ namespace Control.Characters.Hero
             SetStatModifiers(e.equipments);
         }
 
-        private void SetStatModifiers(Equipment[] equipments)
+        private void SetStatModifiers(Equipment.Equipment[] equipments)
         {
             foreach (var e in equipments)
             {
@@ -90,19 +91,19 @@ namespace Control.Characters.Hero
             return heroMain.Hero.GetMainCharacterType();
         }
         
-        public float GetSpeed(ControlType controlType)
+        public float GetSpeed(HeroControlType heroControlType)
         {
             // TODO (HeroStats) : 나중에 Speed 임시 변경시 수정 필요
-            switch (controlType)
+            switch (heroControlType)
             {
-                case ControlType.Joystick:
+                case HeroControlType.Joystick:
                     return 200f;
-                case ControlType.Auto:
+                case HeroControlType.Auto:
                     return 3f;
-                case ControlType.Disable:
+                case HeroControlType.Disable:
                     return 0f;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(controlType), controlType, null);
+                    throw new ArgumentOutOfRangeException(nameof(heroControlType), heroControlType, null);
             }
         }
     }

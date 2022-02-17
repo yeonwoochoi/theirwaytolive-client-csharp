@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Control.Characters.Base;
+using Control.Characters.Type;
 using Control.Weapon;
 using Pathfinding;
 using UnityEngine;
@@ -21,6 +22,7 @@ namespace Control.Characters.Hero.Control.Strategies
         {
             Normal, Chasing, Attacking, Busy
         }
+        
         private State state;
 
         private WeaponType weaponType;
@@ -86,23 +88,17 @@ namespace Control.Characters.Hero.Control.Strategies
             destinationSetter.enabled = false;
         }
 
-        public ControlType GetHeroRole()
+        public HeroControlType GetHeroControlType()
         {
-            return ControlType.Auto;
+            return HeroControlType.Auto;
         }
 
         public Direction GetMoveDirection()
         {
-            var dir = moveDir * 10;
-            if (Math.Abs(dir.x) > Math.Abs(dir.y))
-            {
-                return dir.x >= 0 ? Direction.Right : Direction.Left;
-            }
-
-            return dir.y > 0 ? Direction.Up : Direction.Down;
+            return UtilsClass.GetMoveDirectionFromVector(moveDir);
         }
 
-        public IEnumerator Move()
+        private IEnumerator Move()
         {
             while (true)
             {
@@ -197,7 +193,7 @@ namespace Control.Characters.Hero.Control.Strategies
                     moveDir = (target.GetPosition() - GetPosition()).normalized;
                     heroAnimationController.ChangeDirection(moveDir);
                     heroAnimationController.ChangeMovingState(false);
-                    heroAnimationController.ChangeAttackState(!isAttackCool, Attack, () => {});   
+                    heroAnimationController.ChangeAttackState(!isAttackCool, Attack, AttackCoolTime);   
                     break;
                 case State.Busy:
                     break;
@@ -239,10 +235,6 @@ namespace Control.Characters.Hero.Control.Strategies
         {
             if (isAttackCool || target == null) return;
             target.Interact(heroMain.Hero);
-            // Knockback 효과같은게 있으면 공격과 동시에 적과 거리가 멀어져서
-            // State가 chasing으로 바뀌게 되고 중간에 animation이 다 실행되지 않고 끊긴다
-            // 그래서 OnEndEvent가 실행되지 않는 경우가 생겨 연속공격을 하기 시작함. => 그래서 여기다 Cooltime
-            AttackCoolTime();
         }
 
         private void AttackCoolTime()

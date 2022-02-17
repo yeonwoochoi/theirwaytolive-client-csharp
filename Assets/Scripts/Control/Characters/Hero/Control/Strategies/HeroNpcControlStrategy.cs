@@ -2,6 +2,7 @@
 using System.Collections;
 using Control.Characters.Base;
 using Control.Characters.Enemy;
+using Control.Characters.Type;
 using Control.Weapon;
 using Pathfinding;
 using UnityEngine;
@@ -17,7 +18,7 @@ namespace Control.Characters.Hero.Control.Strategies
             throw new NotImplementedException();
         }
 
-        public IEnumerator Move()
+        private IEnumerator Move()
         {
             throw new NotImplementedException();
         }
@@ -27,9 +28,9 @@ namespace Control.Characters.Hero.Control.Strategies
             throw new NotImplementedException();
         }
 
-        public ControlType GetHeroRole()
+        public HeroControlType GetHeroControlType()
         {
-            return ControlType.Disable;
+            return HeroControlType.Disable;
         }
 
         public Direction GetMoveDirection()

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Control.Characters.Type;
 using Control.Layer;
 using UnityEngine;
 using UnityEngine.UI;
@@ -527,6 +528,17 @@ namespace Util
         {
             var random = new System.Random();
             return random.Next(100) < percentage;
+        }
+        
+        public static Direction GetMoveDirectionFromVector(Vector3 moveDir)
+        {
+            var dir = moveDir * 10;
+            if (Math.Abs(dir.x) > Math.Abs(dir.y))
+            {
+                return dir.x >= 0 ? Direction.Right : Direction.Left;
+            }
+
+            return dir.y > 0 ? Direction.Up : Direction.Down;
         }
     }
 }

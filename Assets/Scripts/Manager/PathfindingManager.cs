@@ -1,4 +1,5 @@
-﻿using Pathfinding;
+﻿using System;
+using Pathfinding;
 using UnityEngine;
 
 namespace Manager
@@ -22,15 +23,22 @@ namespace Manager
             activeGridGraph.is2D = true;
             activeGridGraph.collision.use2D = true;
             activeGridGraph.collision.type = ColliderType.Capsule;
-            activeGridGraph.collision.diameter = 1.2f;
+            activeGridGraph.collision.diameter = 1f;
             
             // 9번 layer (Map) 만 장애물로 인식
             activeGridGraph.collision.mask = 1 << 9;
             
             // 0f 로 설정하면 벽에 딱 붙어서 path finding route가 결정될거임
-            activeGridGraph.collision.diameter = 2f;
+            activeGridGraph.collision.diameter = 1f;
             
             AstarPath.active.Scan();
         }
+
+        /*
+        private void Update()
+        {
+            AstarPath.active.Scan();
+        }
+        */
     }
 }

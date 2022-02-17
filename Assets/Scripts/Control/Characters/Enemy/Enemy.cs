@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Control.Characters.Hero;
+using Control.Characters.Type;
 using Control.Weapon;
 using UnityEngine;
 using Logger = Util.Logger;
@@ -9,39 +13,39 @@ namespace Control.Characters.Enemy
     {
         public interface IEnemyInteractable: ICharacterInteractable
         {
-            public void Interact(Hero.Hero.IHeroInteractable attacker);
+            public void Interact(Hero.Hero.IHeroInteractable subject);
+            public HeroControlType GetControlType();
         }
 
         public static List<Enemy> enemyList = new List<Enemy>();
         
-        public static Enemy Create(Vector3 position, Transform enemyPrefab, WeaponType weaponType, bool activate = false) {
+        // TODO (Hero, Enemy): Creator를 따로 만들자..
+        public static Enemy Create(Vector3 position, Transform enemyPrefab, WeaponType weaponType, EnemyActionType enemyActionType, List<HeroControlType> targetableTypeList, bool activate = false) {
             var enemyTransform = Instantiate(enemyPrefab, position, Quaternion.identity);
 
             var enemyHandler = enemyTransform.GetComponent<Enemy>();
+
+            enemyHandler.enemyActionType = enemyActionType;
+            enemyHandler.initWeaponType = weaponType;
+            enemyHandler.targetableTypeList = targetableTypeList;
             
-            if (activate) enemyHandler.Init(weaponType);
-            else enemyHandler.initWeaponType = weaponType;
+            if (activate) enemyHandler.Init();
             
             return enemyHandler;
         }
 
+        public EnemyActionType enemyActionType;
         public WeaponType initWeaponType;
+        public List<HeroControlType> targetableTypeList;
+        
         private EnemyMain enemyMain;
         private bool isSet = false;
 
-        public void Init(WeaponType weaponType)
-        {
-            if (isSet) return;
-            enemyMain = GetComponent<EnemyMain>();
-            enemyMain.Init(this, weaponType);
-            enemyList.Add(this);
-            isSet = true;
-        }
         public void Init()
         {
             if (isSet) return;
             enemyMain = GetComponent<EnemyMain>();
-            enemyMain.Init(this, initWeaponType);
+            enemyMain.Init(enemyActionType, initWeaponType);
             enemyList.Add(this);
             isSet = true;
         }
@@ -60,12 +64,17 @@ namespace Control.Characters.Enemy
         {
             return enemyMain.EnemyStats.HealthSystem.IsDead();
         }
-
-
+        
         public void Interact(IEnemyInteractable attacker)
         {
             if (!isSet) return;
+            if (!IsTargetable(attacker)) return;
             enemyMain.Damaged(attacker);
+        }
+        public void Heal(int amount)
+        {
+            if (!isSet) return;
+            enemyMain.Heal(amount);
         }
 
         public void Disable()
@@ -74,6 +83,11 @@ namespace Control.Characters.Enemy
             {
                 enemyList.Remove(this);
             }
+        }
+
+        public bool IsTargetable(IEnemyInteractable target)
+        {
+            return targetableTypeList.Any(type => type == target.GetControlType());
         }
     }
 }

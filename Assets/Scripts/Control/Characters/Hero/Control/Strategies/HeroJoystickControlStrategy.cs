@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
 using Control.Characters.Base;
+using Control.Characters.Type;
 using Control.Weapon;
 using UnityEngine;
+using Util;
 
 namespace Control.Characters.Hero.Control.Strategies
 {
@@ -45,7 +47,7 @@ namespace Control.Characters.Hero.Control.Strategies
             moveCoroutine = StartCoroutine(Move());
         }
 
-        public IEnumerator Move()
+        private IEnumerator Move()
         {
             while (true)
             {
@@ -101,9 +103,9 @@ namespace Control.Characters.Hero.Control.Strategies
             enabled = false;
         }
 
-        public ControlType GetHeroRole()
+        public HeroControlType GetHeroControlType()
         {
-            return ControlType.Joystick;
+            return HeroControlType.Joystick;
         }
 
         public Direction GetMoveDirection()
@@ -201,12 +203,7 @@ namespace Control.Characters.Hero.Control.Strategies
 
         private Direction GetDirectionFromVector(float x, float y)
         {
-            if (Math.Abs(x) > Math.Abs(y))
-            {
-                return x >= 0 ? Direction.Right : Direction.Left;
-            }
-
-            return y > 0 ? Direction.Up : Direction.Down;
+            return UtilsClass.GetMoveDirectionFromVector(new Vector3(x, y));
         }
 
         private WeaponType GetWeaponType()
