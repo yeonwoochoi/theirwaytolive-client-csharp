@@ -44,6 +44,12 @@ namespace Control.Characters.Base
         }
         public void ChangeDirection(Vector3 dir)
         {
+            if (Math.Abs(Math.Abs(dir.x) - Math.Abs(dir.y)) < 0.01f)
+            {
+                animator.SetFloat(animatorIdX, dir.x);
+                animator.SetFloat(animatorIdY, 0);
+                return;
+            }
             animator.SetFloat(animatorIdX, dir.x);
             animator.SetFloat(animatorIdY, dir.y);
         }

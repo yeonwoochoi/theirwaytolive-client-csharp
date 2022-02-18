@@ -1,31 +1,32 @@
 ﻿using System.Collections;
-using Control.Characters.Enemy.Action;
 using Control.Characters.Enemy.Targeting;
 using Control.Characters.Type;
 using Pathfinding;
 using UnityEngine;
 
-namespace Control.Characters.Enemy.Base
+namespace Control.Characters.Enemy.Action.Base
 {
     public abstract class BaseEnemyMoveStrategy: MonoBehaviour, IEnemyMovable
     {
         protected EnemyMain enemyMain;
         protected EnemyTargeting enemyTargeting;
         protected EnemyAnimationController enemyAnimationController;
-        protected Rigidbody2D rb2D;
 
         protected AIPath aiPath;
         protected AIDestinationSetter destinationSetter;
 
         protected EnemyActionType actionType;
-        
+
         protected Coroutine moveCoroutine;
         protected Vector3 randomPosition;
-        
+
         protected float wanderRange = 2f;
         protected float wanderCoolTime = 3.5f;
         protected bool isWanderCool = false;
         protected float detectableRange;
+        protected Vector3 moveDir;
+        
+        private Rigidbody2D rb2D;
 
         public virtual void Init(float speed)
         {
@@ -33,6 +34,9 @@ namespace Control.Characters.Enemy.Base
             
             enemyAnimationController = GetComponent<EnemyAnimationController>();
             enemyTargeting = GetComponent<EnemyTargeting>();
+            enemyTargeting = TryGetComponent<EnemyTargeting>(out var targeting)
+                ? targeting
+                : gameObject.AddComponent<EnemyTargeting>();
             
             aiPath = TryGetComponent<AIPath>(out var pathController)
                 ? pathController
@@ -53,7 +57,6 @@ namespace Control.Characters.Enemy.Base
             aiPath.enableRotation = false;
 
             rb2D = GetComponent<Rigidbody2D>();
-            detectableRange = enemyTargeting.GetDetectableRange();
             isWanderCool = false;
         }
 
@@ -75,7 +78,6 @@ namespace Control.Characters.Enemy.Base
             }
             else
             {
-                enemyAnimationController.ChangeDirection(0, 1);
                 enemyAnimationController.ChangeMovingState(false);
             }
         }

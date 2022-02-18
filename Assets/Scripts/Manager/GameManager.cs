@@ -26,18 +26,19 @@ namespace Manager
             PathfindingManager.Instance.Init();
             
             var mainHero = Hero.Create(new Vector3(0, 19, 0), GameAssets.i.pfBachi, HeroControlType.Joystick, WeaponType.Spear, true);
-            Hero.Create(new Vector3(0, 22, 0), GameAssets.i.pfDuju, HeroControlType.Auto, WeaponType.Sword, true);
+            //Hero.Create(new Vector3(0, 22, 0), GameAssets.i.pfDuju, HeroControlType.Auto, WeaponType.Sword, true);
             //Hero.Create(new Vector3(0, 16, 0), GameAssets.i.pfPanno, HeroControlType.Auto, WeaponType.Arrow, true);
             //Hero.Create(new Vector3(-3, 22, 0), GameAssets.i.pfBachi, ControlType.Auto, WeaponType.Spear, true);
             //Hero.Create(new Vector3(-3, 19, 0), GameAssets.i.pfDuju, HeroControlType.Auto, WeaponType.Spear, true);
             //Hero.Create(new Vector3(-3, 16, 0), GameAssets.i.pfPanno, HeroControlType.Auto, WeaponType.Sword, true);
             
             
-            Enemy.Create(new Vector3(6, 19, 0), GameAssets.i.pfEnemy1, WeaponType.Spear, EnemyActionType.Attack, new List<HeroControlType>
+            Enemy.Create(new Vector3(6, 19, 0), GameAssets.i.pfEnemy1, WeaponType.Spear, EnemyActionType.Detect, new List<HeroControlType>
                 {
                     HeroControlType.Joystick,
                     HeroControlType.Auto
-                }, true); 
+                }, true);
+            /*
             Enemy.Create(new Vector3(6, 16, 0), GameAssets.i.pfEnemy1, WeaponType.Arrow, EnemyActionType.Attack, new List<HeroControlType>
                 {
                     HeroControlType.Joystick,
@@ -48,7 +49,6 @@ namespace Manager
                     HeroControlType.Joystick,
                     HeroControlType.Auto
                 }, true);
-            /*
             Enemy.Create(new Vector3(6, 16, 0), GameAssets.i.pfEnemy1, WeaponType.Spear, EnemyActionType.Attack,  new List<HeroControlType>
                 {
                     HeroControlType.Auto,

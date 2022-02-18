@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections;
-using Control.Characters.Enemy.Base;
+using Control.Characters.Enemy.Action.Base;
 using Control.Characters.Enemy.Targeting;
 using Control.Characters.Type;
 using Control.Weapon;
@@ -24,7 +24,6 @@ namespace Control.Characters.Enemy.Action
         
         private const float escapeRange = 2f;
         private bool isEscapeToNormal = false;
-        private Vector3 recentEscapeDir = Vector3.zero;
 
         private void Awake()
         {
@@ -34,6 +33,10 @@ namespace Control.Characters.Enemy.Action
         public override void Init(float speed)
         {
             base.Init(speed);
+            
+            // 각 strategy마다 범위가 다르니까
+            detectableRange = 3.5f;
+            enemyTargeting.Init(DetectModeType.Circle, detectableRange, () => moveDir);
             
             randomPosition = GetPosition() + UtilsClass.GetRandomDir() * wanderRange;
             state = State.Normal;
@@ -75,8 +78,8 @@ namespace Control.Characters.Enemy.Action
                     destinationSetter.SetTarget(randomPosition);
                     break;
                 case State.Escape:
-                    if (tempTarget != null) recentEscapeDir = (GetPosition() - tempTarget.GetPosition()).normalized;
-                    destinationSetter.SetTarget(recentEscapeDir * escapeRange + GetPosition());
+                    if (tempTarget != null) moveDir = (GetPosition() - tempTarget.GetPosition()).normalized;
+                    destinationSetter.SetTarget(moveDir * escapeRange + GetPosition());
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -89,14 +92,14 @@ namespace Control.Characters.Enemy.Action
             switch (state)
             {
                 case State.Normal:
-                    var dir = (randomPosition - GetPosition()).normalized;
+                    moveDir = (randomPosition - GetPosition()).normalized;
                     // 제자리에 있는 경우엔 안바꿔
-                    if (dir.magnitude > 0.001f) enemyAnimationController.ChangeDirection(dir);
+                    if (moveDir.magnitude > 0.001f) enemyAnimationController.ChangeDirection(moveDir);
                     enemyAnimationController.ChangeMovingState(Vector3.Distance(randomPosition, GetPosition()) >= 0.1f);
                     break;
                 case State.Escape:
                     // 도망가는거라 target 반대방향이니
-                    enemyAnimationController.ChangeDirection(recentEscapeDir);
+                    enemyAnimationController.ChangeDirection(moveDir);
                     enemyAnimationController.ChangeMovingState();
                     break;
                 default:
@@ -122,7 +125,7 @@ namespace Control.Characters.Enemy.Action
         protected override void OnStateChangedCallback()
         {
             base.OnStateChangedCallback();
-            randomPosition = GetPosition() + (isEscapeToNormal ? recentEscapeDir : UtilsClass.GetRandomDir()) * wanderRange;
+            randomPosition = GetPosition() + (isEscapeToNormal ? moveDir : UtilsClass.GetRandomDir()) * wanderRange;
             isEscapeToNormal = false;
         }
 

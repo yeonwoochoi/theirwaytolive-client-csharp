@@ -1,7 +1,4 @@
-﻿using System;
-using Control.Characters.Base;
-using Control.Characters.Enemy.Action;
-using Control.Characters.Hero;
+﻿using Control.Characters.Base;
 using Control.Characters.Type;
 using Control.Weapon;
 using UnityEngine;

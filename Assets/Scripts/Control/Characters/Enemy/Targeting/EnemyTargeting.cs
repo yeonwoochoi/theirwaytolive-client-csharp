@@ -10,19 +10,21 @@ namespace Control.Characters.Enemy.Targeting
     {
         private bool isSet = false;
         private Enemy.IEnemyInteractable activeEnemyTarget;
-        private Func<Enemy.IEnemyInteractable, bool> isTargetableFunc;
+        private Func<Enemy.IEnemyInteractable, bool> isTargetableObjectTypeFunc; 
+        private Func<Vector3> getDirectionFunc; 
         private System.Action findTargetInArea;
         private Coroutine detectCoroutine;
-        
+
         private float detectableRange;
         
-        public void Init(DetectModeType type, float detectableRange = 5f)
+        public void Init(DetectModeType type, float detectableRange, Func<Vector3> getDirection)
         {
             if (isSet) return;
             if (detectCoroutine != null) StopCoroutine(detectCoroutine);
             detectCoroutine = StartCoroutine(FindTarget());
-            isTargetableFunc = GetComponent<EnemyMain>().Enemy.IsTargetable;
+            isTargetableObjectTypeFunc = GetComponent<EnemyMain>().Enemy.IsTargetable;
             this.detectableRange = detectableRange;
+            getDirectionFunc = getDirection;
             SetDetectMode(type);
             isSet = true;
         }
@@ -38,12 +40,7 @@ namespace Control.Characters.Enemy.Targeting
             activeEnemyTarget = null;
             enabled = false;
         }
-
-        public float GetDetectableRange()
-        {
-            return detectableRange;
-        }
-
+        
         /// <summary>
         /// 이걸 호출하면 Detect Mode가 바뀜
         /// </summary>
@@ -95,7 +92,7 @@ namespace Control.Characters.Enemy.Targeting
             foreach (var target in Hero.Hero.heroList)
             {
                 if (target.IsDead()) continue;
-                if (!isTargetableFunc(target)) continue;
+                if (!isTargetableObjectTypeFunc(target)) continue;
                 if (Vector3.Distance(GetPosition(), target.GetPosition()) < detectableRange)
                 {
                     if (activeEnemyTarget == null)
@@ -120,10 +117,10 @@ namespace Control.Characters.Enemy.Targeting
             foreach (var target in Hero.Hero.heroList)
             {
                 if (target.IsDead()) continue;
-                if (!isTargetableFunc(target)) continue;
+                if (!isTargetableObjectTypeFunc(target)) continue;
                 
-                var dir = (target.GetPosition() - GetPosition()).normalized;
-                var angle = UtilsClass.GetAngleFromVector(dir);
+                var dir = getDirectionFunc();
+                var angle = UtilsClass.GetAngleFromVectorFloat((target.GetPosition() - GetPosition()).normalized);
                 var direction = UtilsClass.GetMoveDirectionFromVector(dir);
 
                 var isInAngleRange = false;
@@ -147,6 +144,7 @@ namespace Control.Characters.Enemy.Targeting
                 }
 
                 if (!isInAngleRange) continue;
+
                 if (Vector3.Distance(GetPosition(), target.GetPosition()) <= detectableRange)
                 {
                     if (activeEnemyTarget == null)

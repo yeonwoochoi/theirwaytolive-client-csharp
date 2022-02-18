@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections;
-using Control.Characters.Enemy.Base;
+using Control.Characters.Enemy.Action.Base;
 using Control.Characters.Enemy.Targeting;
 using Control.Characters.Type;
 using Control.Weapon;
@@ -32,6 +32,10 @@ namespace Control.Characters.Enemy.Action
         public override void Init(float speed)
         {
             base.Init(speed);
+
+            // 각 strategy마다 범위가 다르니까
+            detectableRange = 5f;
+            enemyTargeting.Init(DetectModeType.Circle, detectableRange, () => moveDir);
             
             randomPosition = GetPosition() + UtilsClass.GetRandomDir() * wanderRange;
 
@@ -102,24 +106,23 @@ namespace Control.Characters.Enemy.Action
         protected override void SetAnimation()
         {
             base.SetAnimation();
-            Vector3 dir;
             switch (state)
             {
                 case State.Normal:
-                    dir = (randomPosition - GetPosition()).normalized;
-                    if (dir.magnitude > 0.01f) enemyAnimationController.ChangeDirection(dir);
+                    moveDir = (randomPosition - GetPosition()).normalized;
+                    if (moveDir.magnitude > 0.01f) enemyAnimationController.ChangeDirection(moveDir);
                     enemyAnimationController.ChangeMovingState(Vector3.Distance(randomPosition, GetPosition()) >= 0.1f);
                     enemyAnimationController.ChangeAttackState(false);
                     break;
                 case State.Chasing:
-                    dir = (target.GetPosition() - GetPosition()).normalized;
-                    enemyAnimationController.ChangeDirection(dir);
+                    moveDir = (target.GetPosition() - GetPosition()).normalized;
+                    enemyAnimationController.ChangeDirection(moveDir);
                     enemyAnimationController.ChangeMovingState();
                     enemyAnimationController.ChangeAttackState(false);
                     break;
                 case State.Attacking:
-                    dir = (target.GetPosition() - GetPosition()).normalized;
-                    enemyAnimationController.ChangeDirection(dir);
+                    moveDir = (target.GetPosition() - GetPosition()).normalized;
+                    enemyAnimationController.ChangeDirection(moveDir);
                     enemyAnimationController.ChangeMovingState(false);
                     enemyAnimationController.ChangeAttackState(!isAttackCool, Attack, AttackCoolTime);   
                     break;

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Control.Characters.Enemy.Base;
+using Control.Characters.Enemy.Action.Base;
 using Control.Characters.Enemy.Targeting;
 using Control.Characters.Type;
+using Control.Stuff;
 using Control.Weapon;
 using Pathfinding;
 using UnityEngine;
@@ -23,6 +24,10 @@ namespace Control.Characters.Enemy.Action
         private Vector3 initPosition;
         private List<Vector3> movablePositions;
 
+        private Enemy.IEnemyInteractable target;
+
+        private FieldOfView fieldOfView;
+
         private void Awake()
         {
             actionType = EnemyActionType.Detect;
@@ -31,14 +36,23 @@ namespace Control.Characters.Enemy.Action
         public override void Init(float speed)
         {
             base.Init(speed);
+            
+            // 각 strategy마다 범위가 다르니까
+            detectableRange = 2f;
+            enemyTargeting.Init(DetectModeType.Sector, detectableRange, () => moveDir);
 
-            wanderRange = 4f;
-            wanderCoolTime = 3.5f;
+            wanderRange = 2f;
+            wanderCoolTime = 5f;
             
             InitMovablePositions();
+            SetRandomPosition();
             
             state = State.Normal;
-            
+
+            moveDir = (randomPosition - GetPosition()).normalized;
+            fieldOfView = Instantiate(GameAssets.i.pfFieldOfView, GetPosition(), Quaternion.identity, transform).GetComponent<FieldOfView>();
+            fieldOfView.Init(Vector3.zero, detectableRange, moveDir);
+
             if (moveCoroutine != null) StopCoroutine(moveCoroutine);
             moveCoroutine = StartCoroutine(Move());
         }
@@ -46,26 +60,19 @@ namespace Control.Characters.Enemy.Action
         protected override void SetState(Enemy.IEnemyInteractable tempTarget, System.Action onStateChangedCallback = null)
         {
             base.SetState(tempTarget, onStateChangedCallback);
+            
             // Calculate target distance for set state
             var targetDistance = 0f;
             if (tempTarget != null) targetDistance = Vector2.Distance(tempTarget.GetPosition(), GetPosition());
             
             if (tempTarget != null)
             {
-                if (targetDistance > detectableRange)
-                {
-                    state = State.Normal;
-                }
-                else
-                {
-                    state = State.Detect;
-                }
+                state = targetDistance > detectableRange ? State.Normal : State.Detect;
             }
             else
             {
                 state = State.Normal;
             }
-            
         }
 
         protected override void SetTarget(Enemy.IEnemyInteractable targetEnemy)
@@ -73,28 +80,39 @@ namespace Control.Characters.Enemy.Action
             switch (state)
             {
                 case State.Normal:
-                    SetRandomPosition();
                     destinationSetter.SetTarget(randomPosition);
                     break;
                 case State.Detect:
-                    
+                    target = targetEnemy;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
-
+        
         protected override void SetAnimation()
         {
             base.SetAnimation();
             switch (state)
             {
                 case State.Normal:
-                    var dir = (randomPosition - GetPosition()).normalized;
-                    if (dir.magnitude > 0.01f) enemyAnimationController.ChangeDirection(dir);
+                    moveDir = (randomPosition - GetPosition()).normalized;
+                    if (moveDir.magnitude > 0.1f)
+                    {
+                        enemyAnimationController.ChangeDirection(moveDir);
+                        fieldOfView.SetAimDirection(moveDir);
+                    }
                     enemyAnimationController.ChangeMovingState(Vector3.Distance(randomPosition, GetPosition()) >= 0.1f);
                     break;
                 case State.Detect:
+                    moveDir = (target.GetPosition() - GetPosition()).normalized;
+                    if (moveDir.magnitude > 0.1f)
+                    {
+                        enemyAnimationController.ChangeDirection(moveDir);
+                        fieldOfView.SetAimDirection(moveDir);
+                    }
+                    // TODO(EnemyDetectMoveStrategy): 뭔가 발견했다는 Animation 실행
+                    Disable();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -110,21 +128,12 @@ namespace Control.Characters.Enemy.Action
                     Wandering();
                     break;
                 case State.Detect:
+                    // TODO(EnemyDetectMoveStrategy): 적 감지했기 때문에 Attack을 하든 뭘하든 Action 있어야함
+                    Debug.Log($"Detect : {target.GetGameObject().name}");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-        }
-
-        protected override void OnStateChangedCallback()
-        {
-            base.OnStateChangedCallback();
-        }
-
-        protected override void ResetTarget()
-        {
-            base.ResetTarget();
-            
         }
 
         private void Wandering()
@@ -141,8 +150,7 @@ namespace Control.Characters.Enemy.Action
             yield return new WaitForSeconds(wanderCoolTime);
             
             // Set new random position
-            var randomDir = UtilsClass.GetRandomDir();
-            randomPosition = GetPosition() + randomDir * wanderRange;
+            SetRandomPosition();
 
             isWanderCool = false;
         }
@@ -166,6 +174,7 @@ namespace Control.Characters.Enemy.Action
 
         private void SetRandomPosition()
         {
+            if (movablePositions == null) InitMovablePositions();
             while (true)
             {
                 var randomIndex = Random.Range(0, movablePositions.Count);

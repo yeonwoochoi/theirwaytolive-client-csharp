@@ -119,7 +119,7 @@ namespace Control.Weapon
         private bool IsSwordAttackArea(Vector3 target)
         {
             var dir = (target - GetPosition()).normalized;
-            var angle = UtilsClass.GetAngleFromVector(dir);
+            var angle = UtilsClass.GetAngleFromVectorFloat(dir);
 
             var isInAngleRange = false;
 
@@ -141,7 +141,7 @@ namespace Control.Weapon
                     throw new ArgumentOutOfRangeException();
             }
             
-            //Debug.Log($"{direction}: {angle}");
+            Debug.Log($"{direction}: {angle} => {isInAngleRange}");
 
             if (!isInAngleRange) return false;
 

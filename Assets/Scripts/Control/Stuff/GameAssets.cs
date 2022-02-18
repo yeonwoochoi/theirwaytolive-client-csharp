@@ -27,5 +27,6 @@ namespace Control.Stuff
         public Transform pfEnemy1;
 
         public Transform pfDamagePopup;
+        public Transform pfFieldOfView;
     }
 }
