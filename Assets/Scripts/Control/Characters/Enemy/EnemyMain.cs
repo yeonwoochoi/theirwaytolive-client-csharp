@@ -38,12 +38,13 @@ namespace Control.Characters.Enemy
             enemyActionStrategySelector = GetComponent<EnemyActionStrategySelector>();
             EnemyEffectController = GetComponent<EnemyEffectController>();
             boxCollider2D = GetComponent<BoxCollider2D>();
+            
+            WeaponSystem = new WeaponSystem(weaponType, type => enemyActionStrategySelector.ChangeWeapon(type));
 
             EnemyStats.Init();
             EnemyEffectController.Init();
             enemyActionStrategySelector.Init(actionType);
 
-            WeaponSystem = new WeaponSystem(weaponType, type => enemyActionStrategySelector.ChangeWeapon(type));
             damageCalculator = new DamageCalculator(EnemyStats);
             
             isSet = true;

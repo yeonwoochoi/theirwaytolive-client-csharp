@@ -65,19 +65,19 @@ namespace Control.Characters.Enemy
                     if (GetComponent<EnemyAttackMoveStrategy>() == null)
                         strategies.Add(gameObject.AddComponent<EnemyAttackMoveStrategy>());
                     speed = 2f;
-                    enemyTargeting.Init(DetectModeType.Circle);
+                    enemyTargeting.Init(DetectModeType.Circle, 5f);
                     break;
                 case EnemyActionType.Escape:
                     if (GetComponent<EnemyEscapeMoveStrategy>() == null)
                         strategies.Add(gameObject.AddComponent<EnemyEscapeMoveStrategy>());
                     speed = 2f;
-                    enemyTargeting.Init(DetectModeType.Circle);
+                    enemyTargeting.Init(DetectModeType.Circle, 5f);
                     break;
                 case EnemyActionType.Detect:
                     if (GetComponent<EnemyDetectMoveStrategy>() == null)
                         strategies.Add(gameObject.AddComponent<EnemyDetectMoveStrategy>());
                     speed = 2f;
-                    enemyTargeting.Init(DetectModeType.Sector);
+                    enemyTargeting.Init(DetectModeType.Sector, 2f);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(actionType), actionType, null);

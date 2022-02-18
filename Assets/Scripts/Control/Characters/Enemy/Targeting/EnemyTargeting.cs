@@ -14,15 +14,15 @@ namespace Control.Characters.Enemy.Targeting
         private System.Action findTargetInArea;
         private Coroutine detectCoroutine;
         
-        // TODO (EnemyTargeting) : 여기다 두는게 맞을지
-        public const float detectableRange = 5f;
+        private float detectableRange;
         
-        public void Init(DetectModeType type)
+        public void Init(DetectModeType type, float detectableRange = 5f)
         {
             if (isSet) return;
             if (detectCoroutine != null) StopCoroutine(detectCoroutine);
             detectCoroutine = StartCoroutine(FindTarget());
             isTargetableFunc = GetComponent<EnemyMain>().Enemy.IsTargetable;
+            this.detectableRange = detectableRange;
             SetDetectMode(type);
             isSet = true;
         }
@@ -39,13 +39,19 @@ namespace Control.Characters.Enemy.Targeting
             enabled = false;
         }
 
+        public float GetDetectableRange()
+        {
+            return detectableRange;
+        }
+
         /// <summary>
         /// 이걸 호출하면 Detect Mode가 바뀜
         /// </summary>
         /// <param name="type"></param>
-        public void ChangeDetectMode(DetectModeType type)
+        public void ChangeDetectMode(DetectModeType type, float detectableRange)
         {
             activeEnemyTarget = null;
+            this.detectableRange = detectableRange;
             SetDetectMode(type);
         }
 
