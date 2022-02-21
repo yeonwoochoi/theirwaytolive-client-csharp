@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Control.Characters.Enemy.Action.Base;
 using Control.Characters.Enemy.Targeting;
 using Control.Characters.Type;
@@ -33,12 +34,10 @@ namespace Control.Characters.Enemy.Action
             actionType = EnemyActionType.Detect;
         }
 
-        public override void Init(float speed)
+        public override void Init(float speed, float detectRange)
         {
-            base.Init(speed);
+            base.Init(speed, detectRange);
             
-            // 각 strategy마다 범위가 다르니까
-            detectableRange = 2f;
             enemyTargeting.Init(DetectModeType.Sector, detectableRange, () => moveDir);
 
             wanderRange = 2f;
@@ -50,6 +49,8 @@ namespace Control.Characters.Enemy.Action
             state = State.Normal;
 
             moveDir = (randomPosition - GetPosition()).normalized;
+            
+            // field of view 설정
             fieldOfView = Instantiate(GameAssets.i.pfFieldOfView, GetPosition(), Quaternion.identity, transform).GetComponent<FieldOfView>();
             fieldOfView.Init(Vector3.zero, detectableRange, moveDir);
 
@@ -60,10 +61,13 @@ namespace Control.Characters.Enemy.Action
         protected override void SetState(Enemy.IEnemyInteractable tempTarget, System.Action onStateChangedCallback = null)
         {
             base.SetState(tempTarget, onStateChangedCallback);
+
+            var prevState = state; 
             
             // Calculate target distance for set state
             var targetDistance = 0f;
             if (tempTarget != null) targetDistance = Vector2.Distance(tempTarget.GetPosition(), GetPosition());
+            
             
             if (tempTarget != null)
             {
@@ -72,6 +76,14 @@ namespace Control.Characters.Enemy.Action
             else
             {
                 state = State.Normal;
+            }
+
+            if (prevState == State.Normal && state == State.Detect)
+            {
+                foreach (var enemy in Enemy.enemyList.Where(enemy => !enemy.IsDead()))
+                {
+                    enemy.GetGameObject().GetComponent<EnemyActionStrategySelector>().SetControlStrategy(EnemyActionType.Attack, 1000f);
+                }
             }
         }
 
@@ -83,7 +95,8 @@ namespace Control.Characters.Enemy.Action
                     destinationSetter.SetTarget(randomPosition);
                     break;
                 case State.Detect:
-                    target = targetEnemy;
+                    // attack move strategy로 넘어가니까
+                    //target = targetEnemy;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -105,18 +118,26 @@ namespace Control.Characters.Enemy.Action
                     enemyAnimationController.ChangeMovingState(Vector3.Distance(randomPosition, GetPosition()) >= 0.1f);
                     break;
                 case State.Detect:
+                    // attack move strategy로 넘어가니까
+                    /*
                     moveDir = (target.GetPosition() - GetPosition()).normalized;
                     if (moveDir.magnitude > 0.1f)
                     {
                         enemyAnimationController.ChangeDirection(moveDir);
                         fieldOfView.SetAimDirection(moveDir);
                     }
-                    // TODO(EnemyDetectMoveStrategy): 뭔가 발견했다는 Animation 실행
-                    Disable();
+                    fieldOfView.SetColor(new Color(1f, 0, 0));
+                    */
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        public override void Disable()
+        {
+            fieldOfView.Disable();
+            base.Disable();
         }
 
         protected override void DoAction()
@@ -128,12 +149,18 @@ namespace Control.Characters.Enemy.Action
                     Wandering();
                     break;
                 case State.Detect:
-                    // TODO(EnemyDetectMoveStrategy): 적 감지했기 때문에 Attack을 하든 뭘하든 Action 있어야함
-                    Debug.Log($"Detect : {target.GetGameObject().name}");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+        
+        protected override void ResetTarget()
+        {
+            base.ResetTarget();
+            target = null;
+            destinationSetter.target = null;
+            enemyTargeting.Disable();
         }
 
         private void Wandering()

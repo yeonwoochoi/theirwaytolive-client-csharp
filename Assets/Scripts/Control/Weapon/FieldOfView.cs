@@ -27,23 +27,27 @@ namespace Control.Weapon
             GetComponent<MeshFilter>().mesh = mesh;
             meshRenderer = GetComponent<MeshRenderer>();
             
+            // Set color
+            SetColor(new Color(0.25f, 1f, 0));
+
             // Set origin
             SetOrigin(origin);
-            
+
             // field of view = fov
             SetFoV(90f);
 
             // vertice 몇개 할건지 => 숫자가 높을 수록 호에 가까워짐
             rayCount = 50;
-            
+
             // 호 반지름 (범위)
             SetViewDistance(viewDistance);
-            
+
             // 초기 방향 설정
-            SetAimDirection(initDirection); 
-            
+            SetAimDirection(initDirection);
+
             SetLayer();
-            
+
+
             isSet = true;
         }
 
@@ -125,11 +129,21 @@ namespace Control.Weapon
         public void SetViewDistance(float viewDistance) {
             this.viewDistance = viewDistance;
         }
+
+        public void SetColor(Color color)
+        {
+            meshRenderer.materials[0].SetColor("Color_d19e734d6e6140b3bfb5581fad04b9cf", color);
+        }
+
+        public void Disable()
+        {
+            Destroy(gameObject);
+        }
         
         private void SetLayer()
         {
             meshRenderer.sortingLayerName = LayerType.Layer1.LayerTypeToString();
-            meshRenderer.sortingOrder = 10000;
+            meshRenderer.sortingOrder = 1000;
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Control.Weapon
         
         public static float GetWeaponAttackRange(WeaponType type, bool isMainHero = false)
         {
-            var baseValue = isMainHero ? 2f : 0f;
+            var baseValue = isMainHero ? 2f : 1f;
             switch (type)
             {
                 case WeaponType.Arrow:

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using Control.Characters.Enemy.Targeting;
 using Control.Characters.Type;
+using Control.Weapon;
 using Pathfinding;
 using UnityEngine;
 
@@ -28,7 +29,7 @@ namespace Control.Characters.Enemy.Action.Base
         
         private Rigidbody2D rb2D;
 
-        public virtual void Init(float speed)
+        public virtual void Init(float speed, float detectRange)
         {
             enemyMain = GetComponent<EnemyMain>();
             
@@ -56,16 +57,18 @@ namespace Control.Characters.Enemy.Action.Base
             aiPath.maxSpeed = speed;
             aiPath.enableRotation = false;
 
+            detectableRange = detectRange;
+
             rb2D = GetComponent<Rigidbody2D>();
             isWanderCool = false;
         }
 
-        public void Disable()
+        public virtual void Disable()
         {
             if (moveCoroutine != null) StopCoroutine(moveCoroutine);
 
             rb2D.velocity = Vector3.zero;
-            
+
             ResetTarget();
             aiPath.InitPath();
 

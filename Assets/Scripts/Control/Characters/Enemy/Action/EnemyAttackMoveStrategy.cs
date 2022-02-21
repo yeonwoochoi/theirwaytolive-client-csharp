@@ -29,12 +29,10 @@ namespace Control.Characters.Enemy.Action
             actionType = EnemyActionType.Attack;
         }
 
-        public override void Init(float speed)
+        public override void Init(float speed, float detectRange)
         {
-            base.Init(speed);
-
-            // 각 strategy마다 범위가 다르니까
-            detectableRange = 5f;
+            base.Init(speed, detectRange);
+            
             enemyTargeting.Init(DetectModeType.Circle, detectableRange, () => moveDir);
             
             randomPosition = GetPosition() + UtilsClass.GetRandomDir() * wanderRange;
@@ -54,7 +52,7 @@ namespace Control.Characters.Enemy.Action
             // Calculate target distance for set state
             var targetDistance = 0f;
             if (tempTarget != null) targetDistance = Vector2.Distance(tempTarget.GetPosition(), GetPosition());
-            
+
             var prevState = state;
             if (tempTarget != null)
             {
@@ -157,6 +155,7 @@ namespace Control.Characters.Enemy.Action
             base.ResetTarget();
             target = null;
             destinationSetter.target = null;
+            enemyTargeting.Disable();
         }
 
         protected override void OnStateChangedCallback()
@@ -175,18 +174,6 @@ namespace Control.Characters.Enemy.Action
             StartCoroutine(StartWanderCoolTime());
         }
 
-        private void Attack()
-        {
-            if (isAttackCool || target == null) return;
-            target.Interact(enemyMain.Enemy);
-        }
-
-        private void AttackCoolTime()
-        {
-            if (isAttackCool) return;
-            StartCoroutine(StartAttackCoolTime());
-        }
-
         private IEnumerator StartWanderCoolTime()
         {
             if (isWanderCool) yield break;
@@ -198,6 +185,18 @@ namespace Control.Characters.Enemy.Action
             randomPosition = GetPosition() + randomDir * wanderRange;
 
             isWanderCool = false;
+        }
+
+        private void Attack()
+        {
+            if (isAttackCool || target == null) return;
+            target.Interact(enemyMain.Enemy);
+        }
+
+        private void AttackCoolTime()
+        {
+            if (isAttackCool) return;
+            StartCoroutine(StartAttackCoolTime());
         }
 
         private IEnumerator StartAttackCoolTime()

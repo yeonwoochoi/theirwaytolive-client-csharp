@@ -30,12 +30,10 @@ namespace Control.Characters.Enemy.Action
             actionType = EnemyActionType.Escape;
         }
 
-        public override void Init(float speed)
+        public override void Init(float speed, float detectRange)
         {
-            base.Init(speed);
+            base.Init(speed, detectRange);
             
-            // 각 strategy마다 범위가 다르니까
-            detectableRange = 3.5f;
             enemyTargeting.Init(DetectModeType.Circle, detectableRange, () => moveDir);
             
             randomPosition = GetPosition() + UtilsClass.GetRandomDir() * wanderRange;
@@ -120,6 +118,13 @@ namespace Control.Characters.Enemy.Action
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+        
+        protected override void ResetTarget()
+        {
+            base.ResetTarget();
+            destinationSetter.target = null;
+            enemyTargeting.Disable();
         }
 
         protected override void OnStateChangedCallback()

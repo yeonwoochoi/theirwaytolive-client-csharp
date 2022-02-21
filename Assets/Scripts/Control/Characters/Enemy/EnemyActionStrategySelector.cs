@@ -31,7 +31,7 @@ namespace Control.Characters.Enemy
 
             strategies = new List<IEnemyMovable>();
             
-            SetControlStrategy(actionType);
+            SetControlStrategy(actionType, GetDefaultDetectableRange(actionType));
             
             isSet = true;
         }
@@ -47,7 +47,7 @@ namespace Control.Characters.Enemy
             return activeActionStrategy.GetEnemyActionType();
         }
 
-        private void SetControlStrategy(EnemyActionType actionType)
+        public void SetControlStrategy(EnemyActionType actionType, float detectableRange)
         {
             var speed = 0f;
             
@@ -75,7 +75,7 @@ namespace Control.Characters.Enemy
 
             activeActionStrategy?.Disable();
             activeActionStrategy = GetMoveStrategyFromActionType(actionType);
-            activeActionStrategy.Init(speed);
+            activeActionStrategy.Init(speed, detectableRange);
         }
 
         private IEnemyMovable GetMoveStrategyFromActionType(EnemyActionType actionType)
@@ -96,6 +96,17 @@ namespace Control.Characters.Enemy
         {
             activeActionStrategy?.Disable();
             // Hero와 다르게 action type에 따라서 Disable 될 때 나오는 Animation이 다를 수 있기 때문에 각자 Custom화 된 Disable 쓰려고 각 Strategy의 Disable에다가 구현함
+        }
+
+        private float GetDefaultDetectableRange(EnemyActionType type)
+        {
+            return type switch
+            {
+                EnemyActionType.Attack => 5f,
+                EnemyActionType.Escape => 3f,
+                EnemyActionType.Detect => 2f,
+                _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+            };
         }
     }
 }

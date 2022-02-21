@@ -8,7 +8,6 @@ namespace Control.Characters.Enemy.Targeting
 {
     public class EnemyTargeting: MonoBehaviour
     {
-        private bool isSet = false;
         private Enemy.IEnemyInteractable activeEnemyTarget;
         private Func<Enemy.IEnemyInteractable, bool> isTargetableObjectTypeFunc; 
         private Func<Vector3> getDirectionFunc; 
@@ -19,14 +18,12 @@ namespace Control.Characters.Enemy.Targeting
         
         public void Init(DetectModeType type, float detectableRange, Func<Vector3> getDirection)
         {
-            if (isSet) return;
             if (detectCoroutine != null) StopCoroutine(detectCoroutine);
             detectCoroutine = StartCoroutine(FindTarget());
             isTargetableObjectTypeFunc = GetComponent<EnemyMain>().Enemy.IsTargetable;
             this.detectableRange = detectableRange;
             getDirectionFunc = getDirection;
             SetDetectMode(type);
-            isSet = true;
         }
 
         public Enemy.IEnemyInteractable GetTarget()

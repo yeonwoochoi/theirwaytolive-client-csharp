@@ -12,18 +12,20 @@ namespace Control.Characters.Enemy
         public WeaponSystem WeaponSystem { get; private set; }
         public EnemyEffectController EnemyEffectController { get; private set; }
 
-        private EnemyActionStrategySelector enemyActionStrategySelector;
+        public EnemyActionStrategySelector EnemyActionStrategySelector { get; private set; }
         private BoxCollider2D boxCollider2D;
         private DamageCalculator damageCalculator;
         
         private bool isSet = false;
 
+        /*
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Alpha1)) ChangeWeapon(WeaponType.Arrow);
             else if (Input.GetKeyDown(KeyCode.Alpha2)) ChangeWeapon(WeaponType.Spear);
             else if (Input.GetKeyDown(KeyCode.Alpha3)) ChangeWeapon(WeaponType.Sword);
         }
+        */
 
 
         public void Init(EnemyActionType actionType, WeaponType weaponType)
@@ -32,15 +34,15 @@ namespace Control.Characters.Enemy
             
             Enemy = GetComponent<Enemy>();
             EnemyStats = GetComponent<EnemyStats>();
-            enemyActionStrategySelector = GetComponent<EnemyActionStrategySelector>();
+            EnemyActionStrategySelector = GetComponent<EnemyActionStrategySelector>();
             EnemyEffectController = GetComponent<EnemyEffectController>();
             boxCollider2D = GetComponent<BoxCollider2D>();
             
-            WeaponSystem = new WeaponSystem(weaponType, type => enemyActionStrategySelector.ChangeWeapon(type));
+            WeaponSystem = new WeaponSystem(weaponType, type => EnemyActionStrategySelector.ChangeWeapon(type));
 
             EnemyStats.Init();
             EnemyEffectController.Init();
-            enemyActionStrategySelector.Init(actionType);
+            EnemyActionStrategySelector.Init(actionType);
 
             damageCalculator = new DamageCalculator(EnemyStats);
             
@@ -76,7 +78,7 @@ namespace Control.Characters.Enemy
         private void Dead()
         {
             boxCollider2D.enabled = false;
-            enemyActionStrategySelector.Disable();
+            EnemyActionStrategySelector.Disable();
             Enemy.Disable();
         }
     }
