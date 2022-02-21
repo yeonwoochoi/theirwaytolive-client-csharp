@@ -98,6 +98,13 @@ namespace Control.Characters.Enemy
             // Hero와 다르게 action type에 따라서 Disable 될 때 나오는 Animation이 다를 수 있기 때문에 각자 Custom화 된 Disable 쓰려고 각 Strategy의 Disable에다가 구현함
         }
 
+        /// <summary>
+        /// detectable range default 값
+        /// 중간에 action strategy를 변경할 시 detectable range를 변경해야 할 경우엔 이 값 말고 custom한 값을 대신 사용.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         private float GetDefaultDetectableRange(EnemyActionType type)
         {
             return type switch
