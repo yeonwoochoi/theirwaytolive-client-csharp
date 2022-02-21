@@ -59,3 +59,4 @@ MonoBehaviour:
   pfEnemy1: {fileID: 246739261740467637, guid: 8d2bede4b59abf64f88c20060f46bb5a, type: 3}
   pfDamagePopup: {fileID: 2920174026715650587, guid: 22ee04564f56fb34083cdef427c9c97b, type: 3}
   pfFieldOfView: {fileID: 7696816558096497426, guid: b06bb24a1b359af4394386b15ed587be, type: 3}
+  pfEmojiBubble: {fileID: 144435686117631498, guid: 376190c32c9a08940aef0b576ba04c2a, type: 3}

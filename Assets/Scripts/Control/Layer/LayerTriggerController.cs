@@ -52,7 +52,7 @@ namespace Control.Layer
 
         private void OnTriggerExit2D(Collider2D other)
         {
-            var controller = other.gameObject.GetComponent<CharacterLayerController>();
+            var controller = other.gameObject.GetComponent<LayerController>();
             if (controller == null) return;
             controller.ChangeLayer(sortingLayer);
         }

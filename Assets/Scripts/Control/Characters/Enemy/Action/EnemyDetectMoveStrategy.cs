@@ -68,7 +68,6 @@ namespace Control.Characters.Enemy.Action
             var targetDistance = 0f;
             if (tempTarget != null) targetDistance = Vector2.Distance(tempTarget.GetPosition(), GetPosition());
             
-            
             if (tempTarget != null)
             {
                 state = targetDistance > detectableRange ? State.Normal : State.Detect;
@@ -80,9 +79,10 @@ namespace Control.Characters.Enemy.Action
 
             if (prevState == State.Normal && state == State.Detect)
             {
+                // TODO (EnemyDetectMoveStrategy): strategy 바꾸는 방식 다시 생각해보기
                 foreach (var enemy in Enemy.enemyList.Where(enemy => !enemy.IsDead()))
                 {
-                    enemy.GetGameObject().GetComponent<EnemyActionStrategySelector>().SetControlStrategy(EnemyActionType.Attack, 1000f);
+                    enemy.GetGameObject().GetComponent<EnemyActionStrategySelector>()?.SetControlStrategy(EnemyActionType.Attack, 1000f);
                 }
             }
         }
@@ -96,7 +96,7 @@ namespace Control.Characters.Enemy.Action
                     break;
                 case State.Detect:
                     // attack move strategy로 넘어가니까
-                    //target = targetEnemy;
+                    // target = targetEnemy;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

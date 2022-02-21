@@ -28,5 +28,7 @@ namespace Control.Stuff
 
         public Transform pfDamagePopup;
         public Transform pfFieldOfView;
+
+        public Transform pfEmojiBubble;
     }
 }

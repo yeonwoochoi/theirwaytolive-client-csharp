@@ -34,7 +34,6 @@ namespace Control.Characters.Base
             animationEventTrigger = TryGetComponent<AnimationEventTrigger>(out var eventTrigger) 
                 ? eventTrigger 
                 : gameObject.AddComponent<AnimationEventTrigger>();
-            
         }
         
         public void ChangeDirection(float xDir, float yDir)

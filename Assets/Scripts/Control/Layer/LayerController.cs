@@ -2,7 +2,7 @@
 
 namespace Control.Layer
 {
-    public class CharacterLayerController: MonoBehaviour
+    public class LayerController: MonoBehaviour
     {
         [SerializeField] private SpriteRenderer[] spriteRenderers;
 

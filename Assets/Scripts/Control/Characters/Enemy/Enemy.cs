@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Control.Characters.Emoji;
 using Control.Characters.Hero;
 using Control.Characters.Type;
+using Control.Layer;
+using Control.Stuff;
 using Control.Weapon;
 using UnityEngine;
 using Logger = Util.Logger;
@@ -28,12 +31,16 @@ namespace Control.Characters.Enemy
             enemyHandler.enemyActionType = enemyActionType;
             enemyHandler.initWeaponType = weaponType;
             enemyHandler.targetableTypeList = targetableTypeList;
+
+            var emojiBubbleTransform =
+                Instantiate(GameAssets.i.pfEmojiBubble, enemyTransform.position, Quaternion.identity, enemyTransform);
+            emojiBubbleTransform.GetComponent<EmojiBubbleController>().Init(LayerType.Layer3);
             
             if (activate) enemyHandler.Init();
             
             return enemyHandler;
         }
-
+        
         public EnemyActionType enemyActionType;
         public WeaponType initWeaponType;
         public List<HeroControlType> targetableTypeList;
@@ -71,6 +78,7 @@ namespace Control.Characters.Enemy
             if (!IsTargetable(attacker)) return;
             enemyMain.Damaged(attacker);
         }
+        
         public void Heal(int amount)
         {
             if (!isSet) return;
