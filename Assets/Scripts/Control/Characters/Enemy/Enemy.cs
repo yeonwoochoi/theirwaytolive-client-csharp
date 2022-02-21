@@ -32,10 +32,6 @@ namespace Control.Characters.Enemy
             enemyHandler.initWeaponType = weaponType;
             enemyHandler.targetableTypeList = targetableTypeList;
 
-            var emojiBubbleTransform =
-                Instantiate(GameAssets.i.pfEmojiBubble, enemyTransform.position, Quaternion.identity, enemyTransform);
-            emojiBubbleTransform.GetComponent<EmojiBubbleController>().Init(LayerType.Layer3);
-            
             if (activate) enemyHandler.Init();
             
             return enemyHandler;
@@ -91,6 +87,17 @@ namespace Control.Characters.Enemy
             {
                 enemyList.Remove(this);
             }
+        }
+
+        /// <summary>
+        /// Emoji 보여주고 싶으면 이거 Call 하면 됨
+        /// 숨기고 싶으면 EmojiType.None 을 넣어주면 됨.
+        /// </summary>
+        /// <param name="type"></param>
+        public void ShowEmoji(EmojiType type)
+        {
+            if (!isSet) return;
+            enemyMain.ShowEmoji(type);
         }
 
         public bool IsTargetable(IEnemyInteractable target)

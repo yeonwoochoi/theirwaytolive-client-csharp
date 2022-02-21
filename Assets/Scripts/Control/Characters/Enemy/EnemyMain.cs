@@ -1,5 +1,8 @@
 ﻿using Control.Characters.Base;
+using Control.Characters.Emoji;
 using Control.Characters.Type;
+using Control.Layer;
+using Control.Stuff;
 using Control.Weapon;
 using UnityEngine;
 
@@ -11,8 +14,9 @@ namespace Control.Characters.Enemy
         public EnemyStats EnemyStats { get; private set; }
         public WeaponSystem WeaponSystem { get; private set; }
         public EnemyEffectController EnemyEffectController { get; private set; }
-
-        public EnemyActionStrategySelector EnemyActionStrategySelector { get; private set; }
+        
+        private EnemyActionStrategySelector enemyActionStrategySelector;
+        private EmojiBubbleController emojiBubbleController; 
         private BoxCollider2D boxCollider2D;
         private DamageCalculator damageCalculator;
         
@@ -34,15 +38,22 @@ namespace Control.Characters.Enemy
             
             Enemy = GetComponent<Enemy>();
             EnemyStats = GetComponent<EnemyStats>();
-            EnemyActionStrategySelector = GetComponent<EnemyActionStrategySelector>();
+            enemyActionStrategySelector = GetComponent<EnemyActionStrategySelector>();
+            
+            var emojiBubbleTransform =
+                Instantiate(GameAssets.i.pfEmojiBubble, transform.position, Quaternion.identity);
+            emojiBubbleTransform.SetParent(transform);
+            emojiBubbleController = emojiBubbleTransform.GetComponent<EmojiBubbleController>();
+            
             EnemyEffectController = GetComponent<EnemyEffectController>();
             boxCollider2D = GetComponent<BoxCollider2D>();
             
-            WeaponSystem = new WeaponSystem(weaponType, type => EnemyActionStrategySelector.ChangeWeapon(type));
+            WeaponSystem = new WeaponSystem(weaponType, type => enemyActionStrategySelector.ChangeWeapon(type));
 
             EnemyStats.Init();
             EnemyEffectController.Init();
-            EnemyActionStrategySelector.Init(actionType);
+            enemyActionStrategySelector.Init(actionType);
+            emojiBubbleController.Init(LayerType.Layer3);
 
             damageCalculator = new DamageCalculator(EnemyStats);
             
@@ -58,6 +69,11 @@ namespace Control.Characters.Enemy
                 EnemyEffectController.OnDamaged(attacker, damageInfo);
                 EnemyStats.HealthSystem.Damaged(damageInfo.amount, Dead); 
             }
+        }
+
+        public void ShowEmoji(EmojiType type)
+        {
+            emojiBubbleController.Show(type);
         }
 
         /// <summary>
@@ -78,7 +94,7 @@ namespace Control.Characters.Enemy
         private void Dead()
         {
             boxCollider2D.enabled = false;
-            EnemyActionStrategySelector.Disable();
+            enemyActionStrategySelector.Disable();
             Enemy.Disable();
         }
     }

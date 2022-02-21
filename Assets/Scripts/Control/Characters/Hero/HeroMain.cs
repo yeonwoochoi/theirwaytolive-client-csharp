@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections;
 using Control.Characters.Base;
+using Control.Characters.Emoji;
 using Control.Characters.Enemy;
 using Control.Characters.Health;
 using Control.Characters.Hero.Control;
 using Control.Characters.Type;
+using Control.Layer;
+using Control.Stuff;
 using Control.Weapon;
 using UnityEngine;
 using Logger = Util.Logger;
@@ -18,8 +21,10 @@ namespace Control.Characters.Hero
         public HeroControlStrategySelector HeroControlStrategySelector { get; private set; }
         public HeroEffectController HeroEffectController { get; private set; }
         public WeaponSystem WeaponSystem { get; private set; }
+        
         private BoxCollider2D boxCollider2D;
         private DamageCalculator damageCalculator;
+        private EmojiBubbleController emojiBubbleController;
         
         private bool isSet = false;
 
@@ -32,10 +37,15 @@ namespace Control.Characters.Hero
             HeroControlStrategySelector = GetComponent<HeroControlStrategySelector>();
             HeroEffectController = GetComponent<HeroEffectController>();
             boxCollider2D = GetComponent<BoxCollider2D>();
+            var emojiBubbleTransform =
+                Instantiate(GameAssets.i.pfEmojiBubble, transform.position, Quaternion.identity);
+            emojiBubbleTransform.SetParent(transform);
+            emojiBubbleController = emojiBubbleTransform.GetComponent<EmojiBubbleController>();
 
             HeroControlStrategySelector.Init(role);
             HeroEffectController.Init();
             HeroStats.Init();
+            emojiBubbleController.Init(LayerType.Layer3, true);
             
             WeaponSystem = new WeaponSystem(weaponType, type => HeroControlStrategySelector.ChangeWeapon(type));
             damageCalculator = new DamageCalculator(HeroStats);
@@ -71,6 +81,11 @@ namespace Control.Characters.Hero
         public void ChangeWeapon(WeaponType type)
         {
             WeaponSystem.SetWeaponType(type);
+        }
+        
+        public void ShowEmoji(EmojiType type)
+        {
+            emojiBubbleController.Show(type);
         }
 
         /// <summary>

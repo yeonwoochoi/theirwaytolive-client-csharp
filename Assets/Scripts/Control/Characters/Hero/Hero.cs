@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Control.Characters.Emoji;
 using Control.Characters.Type;
 using Control.Weapon;
 using UnityEngine;
@@ -102,6 +103,12 @@ namespace Control.Characters.Hero
         {
             if (!isSet) return;
             heroMain.ChangeWeapon(weaponType);
+        }
+
+        public void ShowEmoji(EmojiType type)
+        {
+            if (!isSet) return;
+            heroMain.ShowEmoji(type);
         }
 
         public void ChangeControlType(HeroControlType heroControlType)
