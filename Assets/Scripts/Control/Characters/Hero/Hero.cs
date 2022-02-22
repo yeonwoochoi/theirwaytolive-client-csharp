@@ -22,14 +22,11 @@ namespace Control.Characters.Hero
             var heroTransform = Instantiate(heroPrefab, position, Quaternion.identity);
             var heroHandler = heroTransform.GetComponent<Hero>();
 
-            // Create 되자마자 Activate 되냐 마냐
-            if (activate) heroHandler.Init(heroControlType, weaponType);
-            else
-            {
-                heroHandler._initHeroControlType = heroControlType;
-                heroHandler.initWeaponType = weaponType;
-            }
+            heroHandler.BeforeInit(weaponType, heroControlType);
             
+            // Create 되자마자 Activate 되냐 마냐
+            if (activate) heroHandler.Init();
+
             return heroHandler;
         }
         
@@ -38,24 +35,17 @@ namespace Control.Characters.Hero
         /// </summary>
         [SerializeField] private MainCharacterType mainCharacterType = MainCharacterType.Etc;
         
-        private HeroControlType _initHeroControlType;
+        private HeroControlType initHeroControlType;
         private WeaponType initWeaponType;
         private HeroMain heroMain;
         private bool isSet = false;
-
-        /// <summary>
-        /// Instantiate 하자마자 바로 Activate 하는 경우
-        /// </summary>
-        private void Init(HeroControlType heroControlType, WeaponType weaponType)
+        
+        private void BeforeInit(WeaponType weaponType, HeroControlType heroControlType)
         {
-            if (isSet) return;
+            initHeroControlType = heroControlType;
+            initWeaponType = weaponType;
             heroMain = GetComponent<HeroMain>();
-            SetHeroControlType(heroControlType, type =>
-            {
-                heroMain.Init(this, type, weaponType);
-            });
-            heroList.Add(this);
-            isSet = true;
+            heroMain.BeforeInit(weaponType);
         }
 
         /// <summary>
@@ -65,7 +55,7 @@ namespace Control.Characters.Hero
         {
             if (isSet) return;
             heroMain = GetComponent<HeroMain>();
-            SetHeroControlType(_initHeroControlType, type =>
+            SetHeroControlType(initHeroControlType, type =>
             {
                 heroMain.Init(this, type, initWeaponType);
             });
@@ -119,7 +109,7 @@ namespace Control.Characters.Hero
 
         public HeroControlType GetControlType()
         {
-            return isSet ? heroMain.HeroControlStrategySelector.GetActiveControlType() : _initHeroControlType;
+            return isSet ? heroMain.HeroControlStrategySelector.GetActiveControlType() : initHeroControlType;
         }
 
         public MainCharacterType GetMainCharacterType()
