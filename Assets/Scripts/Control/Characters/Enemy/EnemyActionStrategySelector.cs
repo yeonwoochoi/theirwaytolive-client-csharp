@@ -14,32 +14,18 @@ namespace Control.Characters.Enemy
         private bool isSet = false;
         
         private IEnemyMovable activeActionStrategy;
-        
-        private EnemyAnimationController enemyAnimationController;
 
         private List<IEnemyMovable> strategies;
         
         public void Init(EnemyActionType actionType)
         {
             if (isSet) return;
-            
-            enemyAnimationController = TryGetComponent<EnemyAnimationController>(out var animationController)
-                ? animationController
-                : gameObject.AddComponent<EnemyAnimationController>();
-
-            enemyAnimationController.Init();
 
             strategies = new List<IEnemyMovable>();
             
             SetControlStrategy(actionType, GetDefaultDetectableRange(actionType));
             
             isSet = true;
-        }
-
-        public void ChangeWeapon(WeaponType type)
-        {
-            if (!isSet) return;
-            enemyAnimationController.ChangeWeapon(type);
         }
 
         public EnemyActionType GetActiveActionType()
