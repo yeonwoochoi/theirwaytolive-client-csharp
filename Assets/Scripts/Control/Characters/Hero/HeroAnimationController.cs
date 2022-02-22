@@ -10,6 +10,7 @@ namespace Control.Characters.Hero
         public override void Init()
         {
             base.Init();
+            ChangeDirection(Vector3.down);
             isSet = true;
         }
     }

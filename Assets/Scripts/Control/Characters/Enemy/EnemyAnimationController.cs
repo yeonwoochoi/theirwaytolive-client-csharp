@@ -1,4 +1,5 @@
 ﻿using Control.Characters.Base;
+using UnityEngine;
 
 namespace Control.Characters.Enemy
 {
@@ -7,6 +8,7 @@ namespace Control.Characters.Enemy
         public override void Init()
         {
             base.Init();
+            ChangeDirection(Vector3.down);
             isSet = true;
         }
     }
