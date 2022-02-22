@@ -21,12 +21,35 @@ namespace Control.Characters.Hero
         public HeroControlStrategySelector HeroControlStrategySelector { get; private set; }
         public HeroEffectController HeroEffectController { get; private set; }
         public WeaponSystem WeaponSystem { get; private set; }
-        
+
+        private HeroAnimationController heroAnimationController;
         private BoxCollider2D boxCollider2D;
         private DamageCalculator damageCalculator;
         private EmojiBubbleController emojiBubbleController;
         
         private bool isSet = false;
+        
+        public void BeforeInit(WeaponType weaponType)
+        {
+            heroAnimationController = TryGetComponent<HeroAnimationController>(out var animationController)
+                ? animationController
+                : gameObject.AddComponent<HeroAnimationController>();
+            HeroEffectController = TryGetComponent<HeroEffectController>(out var effectController)
+                ? effectController
+                : gameObject.AddComponent<HeroEffectController>();
+            boxCollider2D = GetComponent<BoxCollider2D>();
+            
+            var emojiBubbleTransform =
+                Instantiate(GameAssets.i.pfEmojiBubble, transform.position, Quaternion.identity);
+            emojiBubbleTransform.SetParent(transform);
+            emojiBubbleController = emojiBubbleTransform.GetComponent<EmojiBubbleController>();
+
+            heroAnimationController.Init();
+            HeroEffectController.Init();
+            emojiBubbleController.Init(LayerType.Layer3);
+
+            WeaponSystem = new WeaponSystem(weaponType, type => heroAnimationController.ChangeWeapon(type));
+        }
 
         public void Init(Hero hero, HeroControlType role, WeaponType weaponType)
         {
@@ -35,19 +58,9 @@ namespace Control.Characters.Hero
             Hero = hero;
             HeroStats = GetComponent<HeroStats>();
             HeroControlStrategySelector = GetComponent<HeroControlStrategySelector>();
-            HeroEffectController = GetComponent<HeroEffectController>();
-            boxCollider2D = GetComponent<BoxCollider2D>();
-            var emojiBubbleTransform =
-                Instantiate(GameAssets.i.pfEmojiBubble, transform.position, Quaternion.identity);
-            emojiBubbleTransform.SetParent(transform);
-            emojiBubbleController = emojiBubbleTransform.GetComponent<EmojiBubbleController>();
 
             HeroControlStrategySelector.Init(role);
-            HeroEffectController.Init();
             HeroStats.Init();
-            emojiBubbleController.Init(LayerType.Layer3, true);
-            
-            WeaponSystem = new WeaponSystem(weaponType, type => HeroControlStrategySelector.ChangeWeapon(type));
             damageCalculator = new DamageCalculator(HeroStats);
             
             isSet = true;
