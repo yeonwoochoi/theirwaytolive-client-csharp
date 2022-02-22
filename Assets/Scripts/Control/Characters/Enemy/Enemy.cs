@@ -28,27 +28,34 @@ namespace Control.Characters.Enemy
 
             var enemyHandler = enemyTransform.GetComponent<Enemy>();
 
-            enemyHandler.enemyActionType = enemyActionType;
-            enemyHandler.initWeaponType = weaponType;
-            enemyHandler.targetableTypeList = targetableTypeList;
+            enemyHandler.BeforeInit(weaponType, enemyActionType, targetableTypeList);
 
             if (activate) enemyHandler.Init();
             
             return enemyHandler;
         }
         
-        public EnemyActionType enemyActionType;
-        public WeaponType initWeaponType;
-        public List<HeroControlType> targetableTypeList;
+        private EnemyActionType enemyActionType;
+        private WeaponType initWeaponType;
+        private List<HeroControlType> targetableTypeList;
         
         private EnemyMain enemyMain;
         private bool isSet = false;
+
+        private void BeforeInit(WeaponType weaponType, EnemyActionType actionType, List<HeroControlType> targetableTypes)
+        {
+            enemyActionType = actionType;
+            initWeaponType = weaponType;
+            targetableTypeList = targetableTypes;
+            enemyMain = GetComponent<EnemyMain>();
+            enemyMain.BeforeInit(weaponType);
+        }
 
         public void Init()
         {
             if (isSet) return;
             enemyMain = GetComponent<EnemyMain>();
-            enemyMain.Init(enemyActionType, initWeaponType);
+            enemyMain.Init(enemyActionType);
             enemyList.Add(this);
             isSet = true;
         }
