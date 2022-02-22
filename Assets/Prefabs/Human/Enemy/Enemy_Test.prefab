@@ -17,7 +17,6 @@ GameObject:
   - component: {fileID: 4209017906603137208}
   - component: {fileID: 5314123638930213241}
   - component: {fileID: 5077134546376948842}
-  - component: {fileID: 2337344303633708860}
   - component: {fileID: -9055034043763782497}
   m_Layer: 7
   m_Name: Enemy_Test
@@ -184,9 +183,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ec08099f6b444c88de2d2e18cb3127, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyActionType: 0
-  initWeaponType: 0
-  targetableTypeList: 
 --- !u!114 &5314123638930213241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,18 +219,6 @@ MonoBehaviour:
     baseValue: 1000
   accuracy:
     baseValue: 20
---- !u!114 &2337344303633708860
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 246739261740467631}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08dff5052c2a491fbf063b62a10022c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &-9055034043763782497
 MonoBehaviour:
   m_ObjectHideFlags: 0
