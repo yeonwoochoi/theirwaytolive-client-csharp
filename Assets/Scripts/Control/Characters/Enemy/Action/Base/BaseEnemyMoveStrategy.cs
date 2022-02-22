@@ -34,7 +34,6 @@ namespace Control.Characters.Enemy.Action.Base
             enemyMain = GetComponent<EnemyMain>();
             
             enemyAnimationController = GetComponent<EnemyAnimationController>();
-            enemyTargeting = GetComponent<EnemyTargeting>();
             enemyTargeting = TryGetComponent<EnemyTargeting>(out var targeting)
                 ? targeting
                 : gameObject.AddComponent<EnemyTargeting>();
