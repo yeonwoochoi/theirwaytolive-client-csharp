@@ -28,7 +28,7 @@ namespace Control.Characters.Enemy.Action
         {
             actionType = EnemyActionType.Attack;
         }
-
+        
         public override void Init(float speed, float detectRange)
         {
             base.Init(speed, detectRange);
@@ -83,7 +83,7 @@ namespace Control.Characters.Enemy.Action
             switch (state)
             {
                 case State.Normal:
-                    ResetTarget();
+                    target = null;
                     destinationSetter.SetTarget(randomPosition);
                     break;
                 case State.Chasing:
