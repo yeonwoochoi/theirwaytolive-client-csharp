@@ -1,4 +1,5 @@
-﻿using Control.Characters.Base;
+﻿using System;
+using Control.Characters.Base;
 using Control.Characters.Emoji;
 using Control.Characters.Type;
 using Control.Layer;
@@ -16,6 +17,7 @@ namespace Control.Characters.Enemy
         public EnemyEffectController EnemyEffectController { get; private set; }
         
         private EnemyActionStrategySelector enemyActionStrategySelector;
+        private EnemyAnimationController enemyAnimationController;
         private EmojiBubbleController emojiBubbleController; 
         private BoxCollider2D boxCollider2D;
         private DamageCalculator damageCalculator;
@@ -31,30 +33,40 @@ namespace Control.Characters.Enemy
         }
         */
 
+        public void BeforeInit(WeaponType weaponType)
+        {
+            enemyAnimationController = TryGetComponent<EnemyAnimationController>(out var animationController)
+                ? animationController
+                : gameObject.AddComponent<EnemyAnimationController>();
+            EnemyEffectController = TryGetComponent<EnemyEffectController>(out var effectController)
+                ? effectController
+                : gameObject.AddComponent<EnemyEffectController>();
+            boxCollider2D = GetComponent<BoxCollider2D>();
+            
+            var emojiBubbleTransform =
+                Instantiate(GameAssets.i.pfEmojiBubble, transform.position, Quaternion.identity);
+            emojiBubbleTransform.SetParent(transform);
+            emojiBubbleController = emojiBubbleTransform.GetComponent<EmojiBubbleController>();
 
-        public void Init(EnemyActionType actionType, WeaponType weaponType)
+            enemyAnimationController.Init();
+            EnemyEffectController.Init();
+            emojiBubbleController.Init(LayerType.Layer3);
+
+            WeaponSystem = new WeaponSystem(weaponType, type => enemyAnimationController.ChangeWeapon(type));
+        }
+
+
+        public void Init(EnemyActionType actionType)
         {
             if (isSet) return;
             
             Enemy = GetComponent<Enemy>();
             EnemyStats = GetComponent<EnemyStats>();
             enemyActionStrategySelector = GetComponent<EnemyActionStrategySelector>();
-            
-            var emojiBubbleTransform =
-                Instantiate(GameAssets.i.pfEmojiBubble, transform.position, Quaternion.identity);
-            emojiBubbleTransform.SetParent(transform);
-            emojiBubbleController = emojiBubbleTransform.GetComponent<EmojiBubbleController>();
-            
-            EnemyEffectController = GetComponent<EnemyEffectController>();
-            boxCollider2D = GetComponent<BoxCollider2D>();
-            
-            WeaponSystem = new WeaponSystem(weaponType, type => enemyActionStrategySelector.ChangeWeapon(type));
 
             EnemyStats.Init();
-            EnemyEffectController.Init();
             enemyActionStrategySelector.Init(actionType);
-            emojiBubbleController.Init(LayerType.Layer3);
-
+            
             damageCalculator = new DamageCalculator(EnemyStats);
             
             isSet = true;
