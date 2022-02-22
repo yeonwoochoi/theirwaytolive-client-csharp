@@ -18,6 +18,7 @@ namespace Control.Characters.Enemy.Targeting
         
         public void Init(DetectModeType type, float detectableRange, Func<Vector3> getDirection)
         {
+            enabled = true;
             if (detectCoroutine != null) StopCoroutine(detectCoroutine);
             detectCoroutine = StartCoroutine(FindTarget());
             isTargetableObjectTypeFunc = GetComponent<EnemyMain>().Enemy.IsTargetable;
@@ -107,7 +108,7 @@ namespace Control.Characters.Enemy.Targeting
                 }
             }
         }
-        
+
         private void FindTargetInSectorArea()
         {
             if (Hero.Hero.heroList.Count <= 0) return;
