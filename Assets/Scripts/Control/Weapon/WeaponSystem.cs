@@ -32,19 +32,14 @@ namespace Control.Weapon
         public static float GetWeaponAttackRange(WeaponType type, bool isMainHero = false)
         {
             var baseValue = isMainHero ? 2f : 1f;
-            switch (type)
+            return type switch
             {
-                case WeaponType.Arrow:
-                    return baseValue + 3.5f;
-                case WeaponType.Spear:
-                    return baseValue + 2f;
-                case WeaponType.Sword:
-                    return baseValue + 1.5f;
-                case WeaponType.None:
-                    return baseValue + 1f;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
-            }
+                WeaponType.Arrow => baseValue + 3.0f,
+                WeaponType.Spear => baseValue + 1f,
+                WeaponType.Sword => baseValue + 0.5f,
+                WeaponType.None => baseValue + 0f,
+                _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+            };
         }
     }
 }
