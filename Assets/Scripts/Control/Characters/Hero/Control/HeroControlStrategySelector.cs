@@ -28,21 +28,16 @@ namespace Control.Characters.Hero.Control
             
             heroMain = GetComponent<HeroMain>();
             
-            heroAnimationController = TryGetComponent<HeroAnimationController>(out var animationController)
-                ? animationController
-                : gameObject.AddComponent<HeroAnimationController>();
+            heroAnimationController = GetComponent<HeroAnimationController>();
             heroTargeting = TryGetComponent<HeroTargeting>(out var targeting)
                 ? targeting
                 : gameObject.AddComponent<HeroTargeting>();
-
-
+            
             heroTargeting.Init(this);
-            heroAnimationController.Init();
             
             strategies = new List<IHeroMovable>();
             SetControlStrategy(initHeroControlType);
 
-            Logger.Debug(this, "init success");
             isSet = true;
         }
 
@@ -69,12 +64,6 @@ namespace Control.Characters.Hero.Control
         {
             if (!isSet) return;
             SetControlStrategy(heroControlType);
-        }
-
-        public void ChangeWeapon(WeaponType weaponType)
-        {
-            if (!isSet) return;
-            heroAnimationController.ChangeWeapon(weaponType);
         }
 
         public void Disable()
