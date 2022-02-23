@@ -48,7 +48,7 @@ namespace Control.Characters.Enemy
             emojiBubbleTransform.SetParent(transform);
             emojiBubbleController = emojiBubbleTransform.GetComponent<EmojiBubbleController>();
 
-            enemyAnimationController.Init();
+            enemyAnimationController.Init(true);
             EnemyEffectController.Init();
             emojiBubbleController.Init(LayerType.Layer3);
 

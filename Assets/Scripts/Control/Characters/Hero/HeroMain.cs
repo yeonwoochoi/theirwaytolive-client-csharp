@@ -44,7 +44,7 @@ namespace Control.Characters.Hero
             emojiBubbleTransform.SetParent(transform);
             emojiBubbleController = emojiBubbleTransform.GetComponent<EmojiBubbleController>();
 
-            heroAnimationController.Init();
+            heroAnimationController.Init(true);
             HeroEffectController.Init();
             emojiBubbleController.Init(LayerType.Layer3);
 

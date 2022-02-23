@@ -18,6 +18,7 @@ namespace Control.Characters.Base
         private readonly int animatorIdWeaponType = Animator.StringToHash(AnimatorParamWeaponType);
         private readonly int animatorIdIsDeath = Animator.StringToHash(AnimatorParamIsDeath);
         private readonly int animatorIdIsSpellCast = Animator.StringToHash(AnimatorParamIsSpellCast);
+        private readonly int animatorIdIsSpawned = Animator.StringToHash(AnimatorParamIsSpawned);
         
         private const string AnimatorParamX = "X";
         private const string AnimatorParamY = "Y";
@@ -26,8 +27,9 @@ namespace Control.Characters.Base
         private const string AnimatorParamWeaponType = "WeaponType";
         private const string AnimatorParamIsDeath = "IsDeath";
         private const string AnimatorParamIsSpellCast = "IsSpellCast";
+        private const string AnimatorParamIsSpawned = "IsSpawn";
 
-        public virtual void Init()
+        public virtual void Init(bool isSpawned = false)
         {
             if (isSet) return;
             animator = GetComponent<Animator>();
@@ -82,6 +84,11 @@ namespace Control.Characters.Base
             {
                 animator.SetBool(animatorIdIsDeath, true);
             }, () => {}, midCallback, endCallback);
+        }
+
+        public void StartSpawnAnimation()
+        {
+            animator.SetTrigger(animatorIdIsSpawned);
         }
     }
 }

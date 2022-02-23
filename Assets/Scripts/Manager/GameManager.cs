@@ -40,54 +40,54 @@ namespace Manager
             
             heroList.Add(mainHero);
             
-            enemyList.Add(Enemy.Create(new Vector3(6, 19, 0), GameAssets.i.pfEnemy1, WeaponType.Spear, EnemyActionType.Attack, new List<HeroControlType>
+            enemyList.Add(Enemy.Create(new Vector3(6, 19, 0), GameAssets.i.pfEnemy1, WeaponType.Spear, EnemyActionType.Escape, new List<HeroControlType>
             {
                 HeroControlType.Joystick,
                 HeroControlType.Auto
             }));
             
-            enemyList.Add(Enemy.Create(new Vector3(6, 16, 0), GameAssets.i.pfEnemy1, WeaponType.Arrow, EnemyActionType.Attack, new List<HeroControlType>
+            enemyList.Add(Enemy.Create(new Vector3(6, 16, 0), GameAssets.i.pfEnemy1, WeaponType.Arrow, EnemyActionType.Escape, new List<HeroControlType>
             {
                 HeroControlType.Joystick,
                 HeroControlType.Auto
             }));
             
-            enemyList.Add(Enemy.Create(new Vector3(6, 13, 0), GameAssets.i.pfEnemy1, WeaponType.Sword, EnemyActionType.Attack, new List<HeroControlType>
+            enemyList.Add(Enemy.Create(new Vector3(6, 13, 0), GameAssets.i.pfEnemy1, WeaponType.Sword, EnemyActionType.Escape, new List<HeroControlType>
             {
                 HeroControlType.Joystick,
                 HeroControlType.Auto
             }));
             
             enemyList.Add(
-                Enemy.Create(new Vector3(6, 16, 0), GameAssets.i.pfEnemy1, WeaponType.Spear, EnemyActionType.Attack,  new List<HeroControlType>
+                Enemy.Create(new Vector3(6, 16, 0), GameAssets.i.pfEnemy1, WeaponType.Spear, EnemyActionType.Escape,  new List<HeroControlType>
                 {
                     HeroControlType.Auto,
                     HeroControlType.Joystick
                 })
             );
             enemyList.Add(
-                Enemy.Create(new Vector3(6, 13, 0), GameAssets.i.pfEnemy1, WeaponType.Arrow, EnemyActionType.Attack,  new List<HeroControlType>
+                Enemy.Create(new Vector3(6, 13, 0), GameAssets.i.pfEnemy1, WeaponType.Arrow, EnemyActionType.Escape,  new List<HeroControlType>
                 {
                     HeroControlType.Auto,
                     HeroControlType.Joystick
                 })
             );
             enemyList.Add(
-                Enemy.Create(new Vector3(6, 22, 0), GameAssets.i.pfEnemy1, WeaponType.Arrow, EnemyActionType.Attack,  new List<HeroControlType>
+                Enemy.Create(new Vector3(6, 22, 0), GameAssets.i.pfEnemy1, WeaponType.Arrow, EnemyActionType.Escape,  new List<HeroControlType>
                 {
                     HeroControlType.Auto,
                     HeroControlType.Joystick
                 })
             );
             enemyList.Add(
-                Enemy.Create(new Vector3(9, 16, 0), GameAssets.i.pfEnemy1, WeaponType.Sword, EnemyActionType.Attack,  new List<HeroControlType>
+                Enemy.Create(new Vector3(9, 16, 0), GameAssets.i.pfEnemy1, WeaponType.Sword, EnemyActionType.Escape,  new List<HeroControlType>
                 {
                     HeroControlType.Auto,
                     HeroControlType.Joystick
                 })
             );
             enemyList.Add(
-                Enemy.Create(new Vector3(9, 13, 0), GameAssets.i.pfEnemy1, WeaponType.Sword, EnemyActionType.Attack,  new List<HeroControlType>
+                Enemy.Create(new Vector3(9, 13, 0), GameAssets.i.pfEnemy1, WeaponType.Sword, EnemyActionType.Escape,  new List<HeroControlType>
                 {
                     HeroControlType.Auto,
                     HeroControlType.Joystick
