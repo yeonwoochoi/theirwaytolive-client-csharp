@@ -24,9 +24,10 @@ namespace Control.Characters.Enemy.Action
         
         private Vector3 initPosition;
         private List<Vector3> movablePositions;
+        private Coroutine setDirCoroutine;
 
         private Enemy.IEnemyInteractable target;
-
+        
         private FieldOfView fieldOfView;
 
         private void Awake()
@@ -54,6 +55,9 @@ namespace Control.Characters.Enemy.Action
             fieldOfView = Instantiate(GameAssets.i.pfFieldOfView, GetPosition(), Quaternion.identity, transform).GetComponent<FieldOfView>();
             fieldOfView.Init(Vector3.zero, detectableRange, moveDir);
 
+            if (setDirCoroutine != null) StopCoroutine(setDirCoroutine);
+            setDirCoroutine = StartCoroutine(SetMoveDirection());
+            
             if (moveCoroutine != null) StopCoroutine(moveCoroutine);
             moveCoroutine = StartCoroutine(Move());
         }
@@ -95,8 +99,6 @@ namespace Control.Characters.Enemy.Action
                     destinationSetter.SetTarget(randomPosition);
                     break;
                 case State.Detect:
-                    // attack move strategy로 넘어가니까
-                    // target = targetEnemy;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -109,25 +111,10 @@ namespace Control.Characters.Enemy.Action
             switch (state)
             {
                 case State.Normal:
-                    moveDir = (randomPosition - GetPosition()).normalized;
-                    if (moveDir.magnitude > 0.1f)
-                    {
-                        enemyAnimationController.ChangeDirection(moveDir);
-                        fieldOfView.SetAimDirection(moveDir);
-                    }
+                    
                     enemyAnimationController.ChangeMovingState(Vector3.Distance(randomPosition, GetPosition()) >= 0.1f);
                     break;
                 case State.Detect:
-                    // attack move strategy로 넘어가니까
-                    /*
-                    moveDir = (target.GetPosition() - GetPosition()).normalized;
-                    if (moveDir.magnitude > 0.1f)
-                    {
-                        enemyAnimationController.ChangeDirection(moveDir);
-                        fieldOfView.SetAimDirection(moveDir);
-                    }
-                    fieldOfView.SetColor(new Color(1f, 0, 0));
-                    */
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -138,6 +125,7 @@ namespace Control.Characters.Enemy.Action
         {
             fieldOfView.Disable();
             base.Disable();
+            if (setDirCoroutine != null) StopCoroutine(setDirCoroutine);
         }
 
         protected override void DoAction()
@@ -161,6 +149,24 @@ namespace Control.Characters.Enemy.Action
             target = null;
             destinationSetter.target = null;
             enemyTargeting.Disable();
+        }
+
+        private IEnumerator SetMoveDirection()
+        {
+            while (state == State.Normal)
+            {
+                yield return new WaitForSeconds(0.05f);
+                var dir = (randomPosition - GetPosition()).normalized;
+                if (dir.magnitude > 0.001f)
+                {
+                    moveDir = dir;
+                    if (dir.magnitude > 0.1f)
+                    {
+                        enemyAnimationController.ChangeDirection(moveDir);
+                        fieldOfView.SetAimDirection(moveDir);
+                    }
+                }
+            }
         }
 
         private void Wandering()
